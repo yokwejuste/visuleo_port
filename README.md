@@ -8,6 +8,7 @@ This is your opensource portfolio backend. It is a simple and easy to use portfo
 
 -   Add projects
 -   Add skills
+-   Link to your socials
 
 ## Installation
 
