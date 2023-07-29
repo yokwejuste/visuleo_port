@@ -23,7 +23,7 @@ schema_view = get_schema_view(
     permission_classes=[permissions.AllowAny],
 )
 
-ROUTE_BASE_VERSION = "api/v1/"
+ROUTE_BASE_VERSION = "api/v0/"
 
 oauth2_endpoint_views = [
     path("authorize/", oauth2_views.AuthorizationView.as_view(), name="authorize"),
@@ -90,5 +90,6 @@ urlpatterns = [
     ),
     re_path(r"$", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
     path("admin/", admin.site.urls),
-    path("", include("apps.portfolio.routes.api")),
+    path(ROUTE_BASE_VERSION, include("apps.portfolio.routes.api")),
+    path(ROUTE_BASE_VERSION, include("apps.users.routes.api")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

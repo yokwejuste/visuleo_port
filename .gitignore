@@ -76,3 +76,4 @@ ipython_config.py
 venv/
 bin/
 lib/
+.env
