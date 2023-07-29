@@ -1,4 +1,6 @@
 asgiref==3.7.2
+azure-core==1.28.0
+azure-storage-blob==12.17.0
 certifi==2023.7.22
 cffi==1.15.1
 charset-normalizer==3.2.0
@@ -12,12 +14,14 @@ django-cors-headers==4.2.0
 django-filter==23.2
 django-oauth-toolkit==2.3.0
 django-simple-history==3.3.0
+django-storages==1.13.2
 django-tenants==3.5.0
 djangorestframework==3.14.0
 drf-yasg==1.21.7
 gunicorn==21.2.0
 idna==3.4
 inflection==0.5.1
+isodate==0.6.1
 Jinja2==3.1.2
 jwcrypto==1.5.0
 Markdown==3.4.4
