@@ -3,7 +3,7 @@ from django.conf import settings
 import os
 
 
-documentation_path = os.path.join(settings.BASE_DIR, "documentation/")
+documentation_path = os.path.join(settings.BASE_DIR, "documentation")
 
 
 def generate_uuid() -> str:
@@ -11,5 +11,5 @@ def generate_uuid() -> str:
 
 
 def load_document(filename):
-    with open(os.path.join(documentation_path, filename), "r") as doc:
-        return doc.read()
+    with open(os.path.join(documentation_path, filename)) as f:
+        return f.read()
