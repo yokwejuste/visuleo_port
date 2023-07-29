@@ -16,6 +16,8 @@ This is your opensource portfolio backend. It is a simple and easy to use portfo
 -   Create a virtual environment `python -m venv venv`
 -   Activate the virtual environment `source venv/bin/activate`
 -   Install dependencies `pip install -r requirements.txt`
+-   Create a `.env` file in the project root `touch .env`
+-   Copy the content in `.env.example` to `.env` and fill in the required values
 -   Run the application `python manage.py runserver`
 
 ## API Documentation
