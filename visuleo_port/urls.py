@@ -12,7 +12,7 @@ from utils.main import load_document
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Batazia API",
+        title="Visuleo API",
         default_version="v1",
         description=load_document("base/index.md"),
         terms_of_service="https://www.google.com/policies/terms/",
