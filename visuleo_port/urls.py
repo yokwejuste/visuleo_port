@@ -91,4 +91,4 @@ urlpatterns = [
     re_path(r"$", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
     path("admin/", admin.site.urls),
     path("", include("apps.portfolio.routes.api")),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
