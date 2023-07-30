@@ -34,12 +34,19 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 LANGUAGES = (("en", _("English")), ("fr", _("French")))
 
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, "locale"),
+]
+
+
 MIDDLEWARE = [
     "django_tenants.middleware.main.TenantMainMiddleware",
     "django_tenants.middleware.TenantSubfolderMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -78,7 +85,7 @@ WSGI_APPLICATION = "visuleo_port.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": 'django_tenants.postgresql_backend',
+        "ENGINE": "django_tenants.postgresql_backend",
         "NAME": os.environ.get("DB_NAME"),
         "USER": os.environ.get("DB_USER"),
         "PASSWORD": os.environ.get("DB_PASSWORD"),
@@ -86,7 +93,6 @@ DATABASES = {
         "PORT": os.environ.get("DB_PORT", 5432),
     }
 }
-
 
 
 # Password validation
@@ -115,7 +121,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 CORS_ALLOW_ALL_ORIGINS = True
 
 
-
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
 
@@ -123,7 +128,7 @@ SESSION_CACHE_ALIAS = "default"
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "en"
 
 TIME_ZONE = "Africa/Douala"
 

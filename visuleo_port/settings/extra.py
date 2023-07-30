@@ -32,7 +32,6 @@ SHARED_APPS = [
 ]
 
 
-
 # swagger configutions
 SWAGGER_SETTINGS = {
     "SECURITY_DEFINITIONS": {
