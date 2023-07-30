@@ -54,7 +54,7 @@ class UserSerializer(serializers.ModelSerializer):
         )
 
 
-class UserResponseSerializer(serializers.ModelSerializer):
+class UserResponseSerializer(serializers.Serializer):
     """
     Serializer for user.
     """

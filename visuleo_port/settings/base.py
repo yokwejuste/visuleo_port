@@ -41,8 +41,7 @@ LOCALE_PATHS = [
 
 
 MIDDLEWARE = [
-    "django_tenants.middleware.main.TenantMainMiddleware",
-    "django_tenants.middleware.TenantSubfolderMiddleware",
+    'django_tenants.middleware.main.TenantMainMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",

@@ -3,12 +3,33 @@ import os
 # djanfo tenant conf
 TENANT_MODEL = "users.Client"
 TENANT_DOMAIN_MODEL = "users.Domain"
-TENANT_SUBFOLDER_PREFIX = "clients"
 DATABASE_ROUTERS = ("django_tenants.routers.TenantSyncRouter",)
 
-TENANT_APPS = ["apps.portfolio.apps.PortfolioConfig", "apps.users.apps.UsersConfig"]
-DATABASE_ROUTERS = ["django_tenants.routers.TenantSyncRouter"]
+TENANT_APPS = [
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "apps.portfolio.apps.PortfolioConfig",
+    "apps.users.apps.UsersConfig",
+    "apps.portfolio.apps.PortfolioConfig",
+    "apps.users.apps.UsersConfig",
+    "rest_framework",
+    "oauth2_provider",
+    "drf_yasg",
+    "django_filters",
+    "corsheaders",
+    "simple_history",
+    "allauth",
+    "allauth.account",
+    "storages",
+]
+DATABASE_ROUTERS = ("django_tenants.routers.TenantSyncRouter",)
 
+
+PUBLIC_SCHEMA_URLCONF = "visuleo_port.urls_public"
 
 SHARED_APPS = [
     "django.contrib.admin",

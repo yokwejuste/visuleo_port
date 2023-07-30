@@ -21,6 +21,8 @@ from django.core.management import call_command
 from drf_yasg.utils import swagger_auto_schema
 from django.utils.timezone import now
 
+from utils.main import load_document
+
 
 User = get_user_model()
 
@@ -118,6 +120,7 @@ class LoginView(APIView, TokenView):
     @swagger_auto_schema(
         operation_id="Login",
         operation_summary="Login a user",
+        operation_description=load_document("auth/login_docs.html"),
         request_body=LoginSerializer,
         tags=["Authentication and Management"],
         responses={
