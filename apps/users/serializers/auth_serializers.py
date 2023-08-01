@@ -1,7 +1,6 @@
-from django.contrib.auth import get_user_model
+from apps.users.models import VisuleoUser as User
 from rest_framework import serializers
 
-User = get_user_model()
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -11,11 +10,15 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = (
-            "email",
-            "password",
-            "phone_number",
-            "name",
+        exclude = (
+            "is_email_verified",
+            "is_phone_number_verified",
+            "is_active",
+            "is_superuser",
+            "last_login",
+            "date_joined",
+            'is_deleted',
+            'id'
         )
         extra_kwargs = {
             "password": {"write_only": True},

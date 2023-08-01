@@ -77,3 +77,4 @@ venv/
 bin/
 lib/
 .env
+.env.dev

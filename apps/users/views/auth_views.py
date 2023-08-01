@@ -1,6 +1,7 @@
 import secrets
 from datetime import timedelta
 from django.contrib.auth import get_user_model
+from django.db import IntegrityError
 from django.db.models import Q
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import generics, status
@@ -60,27 +61,45 @@ class RegistrationView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         email = serializer.validated_data.get("email")
         phone_number = serializer.validated_data.get("phone_number")
-        if (
-            email
-            and User.objects.exclude(email__isnull=True)
-            .exclude(email__exact="")
-            .filter(email=email.lower())
-            .exists()
-        ):
-            return Response(
-                {"error": "User with this email already exists"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+        username = serializer.validated_data.get("username")
+        try:
+            if (
+                email
+                and User.objects.exclude(email__isnull=True)
+                .exclude(email__exact="")
+                .filter(email=email.lower())
+                .exists()
+            ):
+                return Response(
+                    {"error": "User with this email already exists"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
 
-        if (
-            phone_number
-            and User.objects.exclude(phone_number__isnull=True)
-            .exclude(phone_number__exact="")
-            .filter(phone_number=phone_number)
-            .exists()
-        ):
+            if (
+                phone_number
+                and User.objects.exclude(phone_number__isnull=True)
+                .exclude(phone_number__exact="")
+                .filter(phone_number=phone_number)
+                .exists()
+            ):
+                return Response(
+                    {"error": "User with this phone number already exists"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            if (
+                username
+                and User.objects.exclude(username__isnull=True)
+                .exclude(username__exact="")
+                .filter(username=username)
+                .exists()
+            ):
+                return Response(
+                    {"error": "User with this username already exists"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+        except IntegrityError:
             return Response(
-                {"error": "User with this phone number already exists"},
+                {"error": "Integrity error"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
         user = serializer.save()
