@@ -6,6 +6,7 @@ from django.urls import path, re_path, include
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
+from apps.users.views import DefaultView
 
 from utils.main import load_document
 
@@ -72,7 +73,7 @@ if settings.DEBUG:
 
 
 urlpatterns = [
-    path(
+        path(
         "o/",
         include(
             (oauth2_endpoint_views, "oauth2_provider"), namespace="oauth2_provider"
@@ -92,5 +93,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path(ROUTE_BASE_VERSION, include("apps.portfolio.routes.api")),
     path(ROUTE_BASE_VERSION, include("apps.users.routes.api")),
-    path('api-auth/', include('rest_framework.urls')),
+    re_path(r"$", DefaultView.as_view(), name="default"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
