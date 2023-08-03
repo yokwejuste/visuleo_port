@@ -1,0 +1,48 @@
+version: '3.7'
+
+services:
+  api:
+    build:
+      context: .
+    command: >
+      sh -c "pip install gunicorn &&
+            python manage.py makemigrations &&
+            python manage.py migrate &&
+            python manage.py collectstatic --noinput &&
+            gunicorn --bind 0.0.0.0:8000 visuleo_port.wsgi:application"
+    volumes:
+      - .:/visuleo_port
+      - static_data:/static
+      - media_data:/media
+    env_file:
+      - .env
+    depends_on:
+      - db  
+       
+
+  db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - ${DB_PORT}:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 8001:80
+    volumes:
+      - static_data:/usr/src/visuleo_port/staticfiles/
+      - media_data:/usr/src/visuleo_port/media/
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:
+  static_data:
+  media_data:
