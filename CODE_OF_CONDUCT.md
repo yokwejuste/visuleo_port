@@ -11,6 +11,8 @@ Examples of behavior that contributes to creating a positive environment include
 - Gracefully accepting constructive criticism
 - Focusing on what is best for the community
 - Showing empathy towards other community members
+- Encouraging Collaboration and Mentorship: We value collaboration and mentorship within our community. We encourage experienced contributors to help newcomers by providing guidance and support in their contributions.
+- Code Review and Feedback: Code review is essential for our development process. We encourage community members to provide helpful     feedback on code contributions with a positive and supportive approach.
 
 Examples of unacceptable behavior by participants include:
 
