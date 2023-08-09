@@ -2,7 +2,6 @@ from apps.users.models import VisuleoUser as User
 from rest_framework import serializers
 
 
-
 class RegistrationSerializer(serializers.ModelSerializer):
     """
     Serializer for registration.
@@ -17,8 +16,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
             "is_superuser",
             "last_login",
             "date_joined",
-            'is_deleted',
-            'id'
+            "is_deleted",
+            "id",
         )
         extra_kwargs = {
             "password": {"write_only": True},
@@ -55,6 +54,16 @@ class UserSerializer(serializers.ModelSerializer):
             "is_superuser",
             "last_login",
         )
+
+
+class UserMainSerializer(serializers.ModelSerializer):
+    """
+    Serializer for user.
+    """
+
+    class Meta:
+        model = User
+        fields = "__all__"
 
 
 class UserResponseSerializer(serializers.Serializer):

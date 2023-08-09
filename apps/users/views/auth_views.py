@@ -12,6 +12,7 @@ from apps.users.serializers import (
     RegistrationSerializer,
     LoginSerializer,
     UserResponseSerializer,
+    UserMainSerializer,
 )
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.views import APIView
@@ -203,7 +204,7 @@ class LoginView(APIView, TokenView):
             "refresh_token": refresh_token.token,
             "token_type": "Bearer",
             "expires_in": f"{(expiration_time - now()).seconds // 3600} hours",
-            "user": UserResponseSerializer(user).data,
+            "user": UserMainSerializer(user).data,
         }
         return Response(response_data, status=status.HTTP_200_OK)
 
