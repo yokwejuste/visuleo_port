@@ -140,7 +140,7 @@ class LoginView(APIView, TokenView):
     @swagger_auto_schema(
         operation_id="Login",
         operation_summary="Login a user",
-        operation_description=load_document("auth/login_docs.html"),
+        operation_description=load_document("auth/login_docs.md"),
         request_body=LoginSerializer,
         tags=["Authentication and Management"],
         responses={

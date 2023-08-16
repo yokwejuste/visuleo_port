@@ -1,6 +1,6 @@
 import os
 
-# djanfo tenant conf
+# django tenant conf
 TENANT_MODEL = "users.Client"
 TENANT_DOMAIN_MODEL = "users.Domain"
 DATABASE_ROUTERS = ("django_tenants.routers.TenantSyncRouter",)
