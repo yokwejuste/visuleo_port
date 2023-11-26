@@ -43,6 +43,7 @@ class RegistrationView(generics.CreateAPIView):
     @swagger_auto_schema(
         operation_id="Register a user",
         operation_summary="Register a new user",
+        operation_description=load_document("auth/register_docs.md"),
         request_body=RegistrationSerializer,
         tags=["Authentication and Management"],
         responses={
@@ -140,7 +141,7 @@ class LoginView(APIView, TokenView):
     @swagger_auto_schema(
         operation_id="Login",
         operation_summary="Login a user",
-        operation_description=load_document("auth/login_docs.html"),
+        operation_description=load_document("auth/login_docs.md"),
         request_body=LoginSerializer,
         tags=["Authentication and Management"],
         responses={
@@ -217,6 +218,7 @@ class LogoutView(APIView):
 
     @swagger_auto_schema(
         operation_id="Logout Current User",
+        operation_description=load_document("auth/logout_docs.md"),
         tags=["Authentication and Management"],
         responses={
             200: "User logged out successfully",

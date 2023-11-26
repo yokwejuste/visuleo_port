@@ -59,7 +59,7 @@ class BaseModel(models.Model):
 
     objects = BaseModelManager()
 
-    deleted_obkects = BaseModelDeletionManager()
+    deleted_objects = BaseModelDeletionManager()
 
     class Meta:
         abstract = True
