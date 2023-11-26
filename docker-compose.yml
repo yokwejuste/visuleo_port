@@ -9,7 +9,7 @@ services:
             python manage.py makemigrations &&
             python manage.py migrate &&
             python manage.py collectstatic --noinput &&
-            gunicorn --bind 0.0.0.0:8000 visuleo_port.wsgi:application"
+            gunicorn --bind 0.0.0.0:8000 visuleo_port.wsgi:application --reload"
     volumes:
       - .:/visuleo_port
       - static_data:/static
@@ -17,10 +17,9 @@ services:
     env_file:
       - .env
     depends_on:
-      - db  
-       
+      - postgres
 
-  db:
+  postgres:
     image: postgres:15-alpine
     restart: unless-stopped
     environment:
@@ -35,7 +34,7 @@ services:
   nginx:
     build: ./nginx
     ports:
-      - 8001:80
+      - 80:80
     volumes:
       - static_data:/usr/src/visuleo_port/staticfiles/
       - media_data:/usr/src/visuleo_port/media/

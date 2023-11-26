@@ -1,9 +1,8 @@
 import os
 
-from pathlib import Path
-
 from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
+
 from .extra import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -15,7 +14,7 @@ load_dotenv(dotenv_path=os.path.join(BASE_DIR, ".env"))
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET")
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", False)
@@ -41,7 +40,7 @@ LOCALE_PATHS = [
 
 
 MIDDLEWARE = [
-    'django_tenants.middleware.main.TenantMainMiddleware',
+    "django_tenants.middleware.main.TenantMainMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -86,7 +85,7 @@ DATABASES = {
     "default": {
         "ENGINE": "django_tenants.postgresql_backend",
         "NAME": os.environ.get("DB_NAME"),
-        "USER": os.environ.get("DB_USER"),
+        "USER": os.environ.get("DB_USERNAME"),
         "PASSWORD": os.environ.get("DB_PASSWORD"),
         "HOST": os.environ.get("DB_HOST"),
         "PORT": os.environ.get("DB_PORT", 5432),
