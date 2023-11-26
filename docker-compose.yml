@@ -12,15 +12,14 @@ services:
             gunicorn --bind 0.0.0.0:8000 visuleo_port.wsgi:application"
     volumes:
       - .:/visuleo_port
-      - static_data:/static
-      - media_data:/media
+      - static_data:/visuleo_port/static
+      - media_data:/visuleo_port/media
     env_file:
       - .env
     depends_on:
-      - db  
-       
+      - postgres
 
-  db:
+  postgres:
     image: postgres:15-alpine
     restart: unless-stopped
     environment:
