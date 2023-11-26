@@ -78,3 +78,5 @@ bin/
 lib/
 .env
 .env.dev
+static/
+media/
