@@ -9,15 +9,11 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        exclude = (
-            "is_email_verified",
-            "is_phone_number_verified",
-            "is_active",
-            "is_superuser",
-            "last_login",
-            "date_joined",
-            "is_deleted",
-            "id",
+        fields = (
+            "name",
+            "email",
+            "password",
+            "phone_number",
         )
         extra_kwargs = {
             "password": {"write_only": True},

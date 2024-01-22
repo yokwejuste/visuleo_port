@@ -2,10 +2,10 @@ import oauth2_provider.views as oauth2_views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
-ROUTE_BASE_VERSION = "api/v0/"
+ROUTE_BASE_VERSION = settings.ROUTE_BASE_VERSION
 
 oauth2_endpoint_views = [
     path("authorize/", oauth2_views.AuthorizationView.as_view(), name="authorize"),
@@ -54,16 +54,17 @@ if settings.DEBUG:
 
 urlpatterns = (
         [
+            path("__debug__/", include("debug_toolbar.urls")),
             path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-            path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-            path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+            path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+            re_path(r"^$", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
             path(
                 "o/",
                 include(
                     (oauth2_endpoint_views, "oauth2_provider"), namespace="oauth2_provider"
                 ),
             ),
-            path("admin/", admin.site.urls),
+            path("admin/", admin.site.urls) if settings.ENVIRONMENT == "development" else None,
             path(ROUTE_BASE_VERSION, include("apps.portfolio.routes.api")),
             path(ROUTE_BASE_VERSION, include("apps.users.routes.api")),
             path("api-auth/", include("rest_framework.urls")),

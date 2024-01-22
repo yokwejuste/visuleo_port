@@ -86,6 +86,12 @@ class VisuleoUser(BaseModel, AbstractBaseUser):
         default=timezone.now,
         help_text=_("Date and time when this user joined."),
     )
+    user_tag = models.ManyToManyField(
+        "UserTag",
+        verbose_name=_("user tag"),
+        related_name="users",
+        help_text=_("User tag for the user."),
+    )
 
     objects = VisuleoUserManager()
 
@@ -101,4 +107,24 @@ class VisuleoUser(BaseModel, AbstractBaseUser):
         )
 
     def __str__(self) -> str:
-        return self.email
+        return str(self.email)
+
+
+class UserTag(models.Model):
+    """
+    Model that represents a user type.
+    """
+
+    name = models.CharField(
+        _("name"),
+        max_length=255,
+        help_text=_("Name of the user type."),
+    )
+
+    class Meta:
+        verbose_name = _("user type")
+        verbose_name_plural = _("user types")
+        ordering = ("name",)
+
+    def __str__(self) -> str:
+        return str(self.name)

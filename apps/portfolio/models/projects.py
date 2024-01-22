@@ -25,7 +25,7 @@ class Projects(BaseModel):
         _("description"),
         help_text=_("Description of the project."),
     )
-    image = models.ImageField(
+    display_image = models.ImageField(
         _("image"),
         upload_to="projects/",
         help_text=_("Image for the project."),
@@ -60,3 +60,37 @@ class Projects(BaseModel):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Projects, self).save(*args, **kwargs)
+
+
+class ProjectImages(BaseModel):
+    """
+    Model that represents a project image.
+    """
+
+    project = models.ForeignKey(
+        "Projects",
+        verbose_name=_("project"),
+        related_name="images",
+        on_delete=models.CASCADE,
+        help_text=_("Project for the image."),
+    )
+    image = models.ImageField(
+        _("image"),
+        upload_to="projects/",
+        help_text=_("Image for the project."),
+    )
+    project_image_id = models.IntegerField(
+        _("project image id"),
+        help_text=_("Project image id."),
+    )
+
+    class Meta:
+        verbose_name = _("project image")
+        verbose_name_plural = _("project images")
+
+    def save(self, *args, **kwargs):
+        self.project_image_id = self.project.images.count() + 1
+        super(ProjectImages, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.project.name

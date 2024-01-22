@@ -21,7 +21,7 @@ from oauth2_provider.contrib.rest_framework import OAuth2Authentication
 from django.core.management import call_command
 from django.utils.timezone import now
 
-from utils.main import load_document
+from utils.main import load_documentation
 
 
 User = get_user_model()

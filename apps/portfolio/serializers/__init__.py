@@ -1,3 +1,3 @@
-from .categories_serializer import CategoriesSerializer, CategoriesResponseSerializer
-from .projects_serializer import ProjectsSerializer, ProjectsResponseSerializer
-from .skills_serializer import SkillsSerializer, SkillsResponseSerializer
+from apps.portfolio.serializers.categories_serializer import CategoriesSerializer, CategoriesResponseSerializer
+from apps.portfolio.serializers.projects_serializer import ProjectsSerializer, ProjectsResponseSerializer
+from apps.portfolio.serializers.skills_serializer import SkillsSerializer, SkillsResponseSerializer

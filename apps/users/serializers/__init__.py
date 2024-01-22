@@ -1,4 +1,4 @@
-from .auth_serializers import (
+from apps.users.serializers.auth_serializers import (
     RegistrationSerializer,
     LoginSerializer,
     UserResponseSerializer,

@@ -1,10 +1,9 @@
 from rest_framework.filters import SearchFilter
 from rest_framework import permissions
 from rest_framework.viewsets import ModelViewSet
-from models import Projects, Categories
-from serializers import ProjectsSerializer, ProjectsResponseSerializer
-from utils import load_document
-from paginators import ProjectsPagination
+from apps.portfolio.models import Projects, Categories
+from apps.portfolio.serializers import ProjectsSerializer, ProjectsResponseSerializer
+from apps.portfolio.paginators import ProjectsPagination
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 
@@ -16,7 +15,6 @@ class ProjectsViewSet(ModelViewSet):
     filter_backends = [SearchFilter]
     pagination_class = ProjectsPagination
     parser_classes = [MultiPartParser, FormParser]
-    filterset_fields = ["category", "tags", "is_published"]
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
@@ -24,7 +22,7 @@ class ProjectsViewSet(ModelViewSet):
         else:
             return Projects.objects.filter(is_featured=True)
 
-    def list(self, request):
+    def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         search = request.query_params.get("search")
         if search is not None:
@@ -39,7 +37,7 @@ class ProjectsViewSet(ModelViewSet):
         serializer = ProjectsSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    def create(self, request):
+    def create(self, request, *args, **kwargs):
         categories = request.data.pop("categories")
         for category in categories:
             category, _ = Categories.objects.get_or_create(**category)

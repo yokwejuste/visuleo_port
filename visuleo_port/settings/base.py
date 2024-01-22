@@ -1,9 +1,8 @@
-import os
-
 from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
 
-from .extra import *
+from visuleo_port.settings.extra import *
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -21,7 +20,6 @@ DEBUG = os.environ.get("DEBUG", False)
 
 ALLOWED_HOSTS = ["*"]
 
-
 # Application definition
 
 INSTALLED_APPS = list(SHARED_APPS) + [
@@ -30,29 +28,24 @@ INSTALLED_APPS = list(SHARED_APPS) + [
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-
 LANGUAGES = (("en", _("English")), ("fr", _("French")))
-
 
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, "locale"),
 ]
 
-
-MIDDLEWARE = [
-    "django_tenants.middleware.main.TenantMainMiddleware",
+INITIAL_MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "simple_history.middleware.HistoryRequestMiddleware",
 ]
+
+MIDDLEWARE = INITIAL_MIDDLEWARE + EXTRA_MIDDLEWARE
 
 ROOT_URLCONF = "visuleo_port.urls"
 
@@ -77,7 +70,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "visuleo_port.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -91,7 +83,6 @@ DATABASES = {
         "PORT": os.environ.get("DB_PORT", 5432),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -116,10 +107,8 @@ AUTH_USER_MODEL = "users.VisuleoUser"
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
-
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/

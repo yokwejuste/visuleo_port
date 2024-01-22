@@ -2,8 +2,6 @@ from django.db import models
 from apps.users.models import BaseModel
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
-from django.urls import reverse
-
 
 
 class Categories(BaseModel):
@@ -19,10 +17,15 @@ class Categories(BaseModel):
         _('description'),
         help_text=_('Description of the category.'),
     )
-    
+
     class Meta:
         verbose_name = _('category')
         verbose_name_plural = _('categories')
-    
-    def __str__(self) -> str:
+        ordering = ('name',)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Categories, self).save(*args, **kwargs)
+
+    def __str__(self):
         return self.name

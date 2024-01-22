@@ -1,9 +1,21 @@
 import os
+from utils import load_documentation
 
-# djanfo tenant conf
+# django tenant conf
 TENANT_MODEL = "users.Client"
 TENANT_DOMAIN_MODEL = "users.Domain"
 DATABASE_ROUTERS = ("django_tenants.routers.TenantSyncRouter",)
+
+EXTRA_MIDDLEWARE = [
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "apps.users.middlewares.django_tenant.TenantMiddleware",
+    "simple_history.middleware.HistoryRequestMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+]
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 TENANT_APPS = [
     "django.contrib.admin",
@@ -12,8 +24,8 @@ TENANT_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "apps.portfolio.apps.PortfolioConfig",
-    "apps.users.apps.UsersConfig",
+    "apps.portfolio",
+    "apps.users",
     "django_tenants",
     "rest_framework",
     "oauth2_provider",
@@ -25,6 +37,7 @@ TENANT_APPS = [
     "allauth",
     "allauth.account",
     "storages",
+    "debug_toolbar",
 ]
 
 PUBLIC_SCHEMA_URLCONF = "visuleo_port.urls_public"
@@ -36,8 +49,8 @@ SHARED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "apps.portfolio.apps.PortfolioConfig",
-    "apps.users.apps.UsersConfig",
+    "apps.portfolio",
+    "apps.users",
     "django_tenants",
     "rest_framework",
     "oauth2_provider",
@@ -49,6 +62,7 @@ SHARED_APPS = [
     "allauth",
     "allauth.account",
     "storages",
+    "debug_toolbar",
 ]
 
 # rest framework config
@@ -87,12 +101,20 @@ OAUTH2_PROVIDER = {
     },
 }
 
+# API versioning and configuration
+API_VERSION = os.environ.get("API_VERSION", "v1")
+API_DOC_TITLE = os.environ.get("API_DOC_TITLE", "API Documentation")
+API_DOC_DESCRIPTION = load_documentation("api_description.md")
+ROUTE_BASE_VERSION = os.environ.get("ROUTE_BASE_VERSION", f"/api/{API_VERSION}/")
+
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Your Project API',
-    'DESCRIPTION': 'Your project description',
-    'VERSION': '1.0.0',
+    'TITLE': API_DOC_TITLE,
+    'DESCRIPTION': API_DOC_DESCRIPTION,
+    'VERSION': API_VERSION,
     'SERVE_INCLUDE_SCHEMA': False,
     'SWAGGER_UI_DIST': 'SIDECAR',
     'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
     'REDOC_DIST': 'SIDECAR',
 }
+
+ENVIRONMENT = os.environ.get("ENVIRONMENT", "development")
