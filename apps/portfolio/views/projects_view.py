@@ -3,7 +3,6 @@ from rest_framework import permissions
 from rest_framework.viewsets import ModelViewSet
 from models import Projects, Categories
 from serializers import ProjectsSerializer, ProjectsResponseSerializer
-from drf_yasg.utils import swagger_auto_schema
 from utils import load_document
 from paginators import ProjectsPagination
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -25,11 +24,6 @@ class ProjectsViewSet(ModelViewSet):
         else:
             return Projects.objects.filter(is_featured=True)
 
-    @swagger_auto_schema(
-        operation_id="Get all projects",
-        operation_summary="Get all projects",
-        operation_description=load_document("portfolio/projects_docs.html"),
-    )
     def list(self, request):
         queryset = self.filter_queryset(self.get_queryset())
         search = request.query_params.get("search")

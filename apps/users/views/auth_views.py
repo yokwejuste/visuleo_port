@@ -3,7 +3,6 @@ from datetime import timedelta
 from django.contrib.auth import get_user_model
 from django.db import IntegrityError
 from django.db.models import Q
-from drf_yasg.utils import swagger_auto_schema
 from rest_framework import generics, status
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -20,7 +19,6 @@ from oauth2_provider.models import Application, AccessToken, RefreshToken
 from oauth2_provider.views import TokenView
 from oauth2_provider.contrib.rest_framework import OAuth2Authentication
 from django.core.management import call_command
-from drf_yasg.utils import swagger_auto_schema
 from django.utils.timezone import now
 
 from utils.main import load_document
@@ -40,18 +38,7 @@ class RegistrationView(generics.CreateAPIView):
         AllowAny,
     ]
 
-    @swagger_auto_schema(
-        operation_id="Register a user",
-        operation_summary="Register a new user",
-        request_body=RegistrationSerializer,
-        tags=["Authentication and Management"],
-        responses={
-            201: "You will be rerouted to the confirmation page",
-            300: "Multiple choices",
-            400: "Bad request",
-            500: "Internal server error",
-        },
-    )
+
     def post(self, request):
         if not request.data:
             return Response(
@@ -137,19 +124,7 @@ class LoginView(APIView, TokenView):
     def get_serializer(self, *args, **kwargs):
         return self.serializer_class(*args, **kwargs)
 
-    @swagger_auto_schema(
-        operation_id="Login",
-        operation_summary="Login a user",
-        operation_description=load_document("auth/login_docs.html"),
-        request_body=LoginSerializer,
-        tags=["Authentication and Management"],
-        responses={
-            200: UserResponseSerializer,
-            300: "Multiple choices",
-            400: "Bad request",
-            500: "Internal server error",
-        },
-    )
+
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -215,14 +190,6 @@ class LogoutView(APIView):
     ]
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(
-        operation_id="Logout Current User",
-        tags=["Authentication and Management"],
-        responses={
-            200: "User logged out successfully",
-            500: "Server Error",
-        },
-    )
     def post(self, request):
         user = request.user
         app = Application.objects.get(name="Default")

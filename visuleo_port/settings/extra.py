@@ -14,11 +14,11 @@ TENANT_APPS = [
     "django.contrib.staticfiles",
     "apps.portfolio.apps.PortfolioConfig",
     "apps.users.apps.UsersConfig",
-    "apps.portfolio.apps.PortfolioConfig",
-    "apps.users.apps.UsersConfig",
+    "django_tenants",
     "rest_framework",
     "oauth2_provider",
-    "drf_yasg",
+    "drf_spectacular",
+    "drf_spectacular_sidecar",
     "django_filters",
     "corsheaders",
     "simple_history",
@@ -26,8 +26,6 @@ TENANT_APPS = [
     "allauth.account",
     "storages",
 ]
-DATABASE_ROUTERS = ("django_tenants.routers.TenantSyncRouter",)
-
 
 PUBLIC_SCHEMA_URLCONF = "visuleo_port.urls_public"
 
@@ -43,33 +41,15 @@ SHARED_APPS = [
     "django_tenants",
     "rest_framework",
     "oauth2_provider",
-    "drf_yasg",
     "django_filters",
+    "drf_spectacular",
+    "drf_spectacular_sidecar",
     "corsheaders",
     "simple_history",
     "allauth",
     "allauth.account",
     "storages",
 ]
-
-
-# swagger configutions
-SWAGGER_SETTINGS = {
-    "SECURITY_DEFINITIONS": {
-        "basic": {"type": "basic"},
-        "oauth2": {
-            "type": "oauth2",
-            "authorizationUrl": f"{os.environ.get('URL')}/o/authorize/",
-            "flow": "implicit",
-            "scopes": {
-                "read": "Read scope",
-                "write": "Write scope",
-                "groups": "Access to your groups",
-            },
-        },
-    },
-}
-
 
 # rest framework config
 REST_FRAMEWORK = {
@@ -79,7 +59,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
         "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
     ],
-    "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
@@ -105,4 +85,14 @@ OAUTH2_PROVIDER = {
         "write": "Write scope",
         "groups": "Access to your groups",
     },
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Your Project API',
+    'DESCRIPTION': 'Your project description',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SWAGGER_UI_DIST': 'SIDECAR',
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    'REDOC_DIST': 'SIDECAR',
 }

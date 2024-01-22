@@ -116,8 +116,6 @@ AUTH_USER_MODEL = "users.VisuleoUser"
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
-CORS_ALLOW_ALL_ORIGINS = True
-
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
