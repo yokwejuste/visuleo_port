@@ -14,6 +14,7 @@ from apps.users.serializers import (
     UserMainSerializer,
 )
 from django.core.exceptions import ObjectDoesNotExist
+from drf_spectacular.utils import extend_schema
 from rest_framework.views import APIView
 from oauth2_provider.models import Application, AccessToken, RefreshToken
 from oauth2_provider.views import TokenView
@@ -22,7 +23,6 @@ from django.core.management import call_command
 from django.utils.timezone import now
 
 from utils.main import load_documentation
-
 
 User = get_user_model()
 
@@ -38,8 +38,13 @@ class RegistrationView(generics.CreateAPIView):
         AllowAny,
     ]
 
-
-    def post(self, request):
+    @extend_schema(
+        request=RegistrationSerializer,
+        responses={201: UserResponseSerializer},
+        description=load_documentation("auth/registration.md"),
+        tags=["Authenticate"],
+    )
+    def post(self, request, *args, **kwargs):
         if not request.data:
             return Response(
                 {"error": "Please provide the required fields"},
@@ -52,11 +57,11 @@ class RegistrationView(generics.CreateAPIView):
         username = serializer.validated_data.get("username")
         try:
             if (
-                email
-                and User.objects.exclude(email__isnull=True)
-                .exclude(email__exact="")
-                .filter(email=email.lower())
-                .exists()
+                    email
+                    and User.objects.exclude(email__isnull=True)
+                    .exclude(email__exact="")
+                    .filter(email=email.lower())
+                    .exists()
             ):
                 return Response(
                     {"error": "User with this email already exists"},
@@ -64,22 +69,22 @@ class RegistrationView(generics.CreateAPIView):
                 )
 
             if (
-                phone_number
-                and User.objects.exclude(phone_number__isnull=True)
-                .exclude(phone_number__exact="")
-                .filter(phone_number=phone_number)
-                .exists()
+                    phone_number
+                    and User.objects.exclude(phone_number__isnull=True)
+                    .exclude(phone_number__exact="")
+                    .filter(phone_number=phone_number)
+                    .exists()
             ):
                 return Response(
                     {"error": "User with this phone number already exists"},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
             if (
-                username
-                and User.objects.exclude(username__isnull=True)
-                .exclude(username__exact="")
-                .filter(username=username)
-                .exists()
+                    username
+                    and User.objects.exclude(username__isnull=True)
+                    .exclude(username__exact="")
+                    .filter(username=username)
+                    .exists()
             ):
                 return Response(
                     {"error": "User with this username already exists"},
@@ -107,7 +112,7 @@ class LoginView(APIView, TokenView):
         AllowAny,
     ]
 
-    def authenticate(self, request, email_or_phone=None, password=None):
+    def authenticate(self, email_or_phone=None, password=None):
         try:
             user = User.objects.get(
                 Q(email=email_or_phone) | Q(phone_number=email_or_phone)
@@ -123,7 +128,6 @@ class LoginView(APIView, TokenView):
 
     def get_serializer(self, *args, **kwargs):
         return self.serializer_class(*args, **kwargs)
-
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -190,7 +194,7 @@ class LogoutView(APIView):
     ]
     permission_classes = [IsAuthenticated]
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         user = request.user
         app = Application.objects.get(name="Default")
         tokens = AccessToken.objects.filter(user=user, application=app)

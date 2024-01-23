@@ -1,5 +1,7 @@
-from apps.users.models import VisuleoUser as User
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
+
+User = get_user_model()
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
