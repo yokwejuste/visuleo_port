@@ -4,6 +4,7 @@ services:
   api:
     build:
       context: .
+      dockerfile: Dockerfile.prod
     command: >
       sh -c "pip install gunicorn &&
             python manage.py makemigrations &&
@@ -34,7 +35,7 @@ services:
   nginx:
     build: ./nginx
     ports:
-      - 8001:80
+      - 80:80
     volumes:
       - static_data:/usr/src/visuleo_port/staticfiles/
       - media_data:/usr/src/visuleo_port/media/

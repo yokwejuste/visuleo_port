@@ -13,7 +13,7 @@ variables:
   dockerRegistryServiceConnection: '1dc09194-7838-4c5e-b5c6-de01e0caf321'
   imageRepository: 'backend'
   containerRegistry: 'visuleo.azurecr.io'
-  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile.dev'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile.prod'
   tag: '$(Build.BuildId)'
 
   # Agent VM image name
