@@ -19,7 +19,7 @@ jobs:
           separator: ","
 
       - name: copy file via ssh password
-        uses: appleboy/scp-action@v0.1.4
+        uses: appleboy/scp-action@v0.1.10
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
