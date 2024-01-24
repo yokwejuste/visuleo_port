@@ -52,5 +52,4 @@ jobs:
             fi
             cd visuleo_port
             docker system prune -af
-            docker compose down --volumes
             docker compose up -d --build
