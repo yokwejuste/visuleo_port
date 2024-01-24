@@ -9,39 +9,39 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Get changed files
-      id: changed-files
-      uses: tj-actions/changed-files@v42
-      with:
-        since_last_remote_commit: true
-        separator: ","
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v42
+        with:
+          since_last_remote_commit: true
+          separator: ","
 
-    - name: copy file via ssh password
-      uses: appleboy/scp-action@v0.1.7
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-        port: ${{ secrets.PORT }}
-        source: "."
-        target: ${{ github.event.repository.name }}
+      - name: copy file via ssh password
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          source: "."
+          target: ${{ github.event.repository.name }}
 
   build_project:
     name: Build
     needs: deploy_project
     runs-on: ubuntu-latest
     steps:
-    - name: executing remote ssh commands using password
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-        port: ${{ secrets.PORT }}
-        script: |
-          cd backend
-          docker rm -f $(docker ps -aq) && docker rmi -f $(docker images -q) &&\ docker volume rm -f $(docker volume ls -q) && docker system prune -af
-          docker compose down --volumes
-          docker compose up -d --build
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd backend
+            docker rm -f $(docker ps -aq) && docker rmi -f $(docker images -q) &&\ docker volume rm -f $(docker volume ls -q) && docker system prune -af
+            docker compose down --volumes
+            docker compose up -d --build
