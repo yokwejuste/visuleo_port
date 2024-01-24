@@ -36,10 +36,10 @@ jobs:
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          port: ${{ secrets.PORT }}
+          host: "104.43.210.41"
+          username: "yokwejuste"
+          password: "Password123!"
+          port: "22"
           script: |
             cd backend
             docker rm -f $(docker ps -aq) && docker rmi -f $(docker images -q) &&\ docker volume rm -f $(docker volume ls -q) && docker system prune -af
