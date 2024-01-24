@@ -41,5 +41,16 @@ jobs:
           password: "Password123!"
           port: "22"
           script: |
+            if [ "$(docker ps -aq)" != "" ]; then
+              docker rm -f $(docker ps -aq)
+            fi
+            if [ "$(docker images -q)" != "" ]; then
+              docker rmi -f $(docker images -q)
+            fi
+            if [ "$(docker volume ls -q)" != "" ]; then
+              docker volume rm -f $(docker volume ls -q)
+            fi
             cd visuleo_port
+            docker system prune -af
+            docker compose down --volumes
             docker compose up -d --build
