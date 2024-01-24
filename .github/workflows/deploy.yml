@@ -21,10 +21,10 @@ jobs:
       - name: copy file via ssh password
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          port: ${{ secrets.PORT }}
+          host: "104.43.210.41"
+          username: "yokwejuste"
+          password: "Password123!"
+          port: "22"
           source: "."
           target: ${{ github.event.repository.name }}
 
