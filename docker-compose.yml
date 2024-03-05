@@ -2,6 +2,7 @@ version: '3.7'
 
 services:
   api:
+    container_name: api
     build:
       context: .
       dockerfile: Dockerfile.prod
@@ -22,6 +23,7 @@ services:
 
   postgres:
     image: postgres:15-alpine
+    container_name: postgres
     restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -32,15 +34,73 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    command: celery -A visuleo_port worker -l info
+    volumes:
+      - .:/visuleo_port
+      - static_data:/visuleo_port/static
+      - media_data:/visuleo_port/media
+    env_file:
+      - .env
+    depends_on:
+      - api
+      - redis
+
   nginx:
     build: ./nginx
     ports:
-      - 80:80
+      - "80:80"
     volumes:
       - static_data:/usr/src/visuleo_port/staticfiles/
       - media_data:/usr/src/visuleo_port/media/
     depends_on:
       - api
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+
+
+  reverse-proxy:
+    image: valian/docker-nginx-auto-ssl:1.0.0
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - "node.role==manager"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ssl_data:/etc/resty-auto-ssl
+      - ./nginx/prod/server-proxy.conf:/usr/local/openresty/nginx/conf/server-proxy.conf
+    environment:
+      ALLOWED_DOMAINS: "(api|www.api|rabbitmq|prometheus|media).visuleo.yokwejuste.me"
+      SITES:
+        "api.visuleo.yokwejuste.me=api:8000;api.visuleo.yokwejuste.me=api:8000;\
+        media.zubhub.unstructured.studio=media:8001;\
+        rabbitmq.zubhub.unstructured.studio=rabbitmq:15672"
+      FORCE_HTTPS: "true"
+    depends_on:
+      - api
+      - postgres
+      - redis
+      - nginx
+      - prometheus
 
 volumes:
   postgres_data:

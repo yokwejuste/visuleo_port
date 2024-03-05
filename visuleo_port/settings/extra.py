@@ -18,26 +18,9 @@ INTERNAL_IPS = [
 ]
 
 TENANT_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
     "apps.portfolio",
     "apps.users",
-    "django_tenants",
-    "rest_framework",
-    "oauth2_provider",
     "drf_spectacular",
-    "drf_spectacular_sidecar",
-    "django_filters",
-    "corsheaders",
-    "simple_history",
-    "allauth",
-    "allauth.account",
-    "storages",
-    "debug_toolbar",
 ]
 
 PUBLIC_SCHEMA_URLCONF = "visuleo_port.urls_public"
