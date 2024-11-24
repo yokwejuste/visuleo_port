@@ -1,3 +1,0 @@
-from apps.portfolio.serializers.categories_serializer import CategoriesSerializer, CategoriesResponseSerializer
-from apps.portfolio.serializers.projects_serializer import ProjectsSerializer, ProjectsResponseSerializer
-from apps.portfolio.serializers.skills_serializer import SkillsSerializer, SkillsResponseSerializer

@@ -5,8 +5,6 @@ from django.contrib import admin
 from django.urls import path, re_path, include
 from apps.users.views import DefaultView
 
-ROUTE_BASE_VERSION = "api/v0/"
-
 oauth2_endpoint_views = [
     path("authorize/", oauth2_views.AuthorizationView.as_view(), name="authorize"),
     path("token/", oauth2_views.TokenView.as_view(), name="token"),
@@ -53,14 +51,12 @@ if settings.DEBUG:
     ]
 
 urlpatterns = [
-                  path(
-                      "o/",
-                      include(
-                          (oauth2_endpoint_views, "oauth2_provider"), namespace="oauth2_provider"
-                      ),
-                  ),
-                  path("admin/", admin.site.urls),
-                  path(ROUTE_BASE_VERSION, include("apps.portfolio.routes.api")),
-                  path(ROUTE_BASE_VERSION, include("apps.users.routes.api")),
-                  re_path(r"$", DefaultView.as_view(), name="default"),
-              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path(
+        "o/",
+        include(
+            (oauth2_endpoint_views, "oauth2_provider"), namespace="oauth2_provider"
+        ),
+    ),
+    path("admin/", admin.site.urls),
+    re_path(r"$", DefaultView.as_view(), name="default"),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

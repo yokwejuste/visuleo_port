@@ -1,4 +1,4 @@
-
+.data/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *__pycache__*
@@ -80,3 +80,4 @@ lib/
 .env.dev
 static/
 media/
+.venv/
