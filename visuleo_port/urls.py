@@ -2,8 +2,7 @@ import oauth2_provider.views as oauth2_views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path, re_path
-from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+from django.urls import include, path
 
 ROUTE_BASE_VERSION = settings.ROUTE_BASE_VERSION
 
@@ -38,7 +37,6 @@ if settings.DEBUG:
         ),
     ]
 
-    # OAuth2 Token Management endpoints
     oauth2_endpoint_views += [
         path(
             "authorized-tokens/",
@@ -53,22 +51,22 @@ if settings.DEBUG:
     ]
 
 urlpatterns = (
-        [
-            path("__debug__/", include("debug_toolbar.urls")),
-            path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-            path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-            re_path(r"^$", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
-            path(
-                "o/",
-                include(
-                    (oauth2_endpoint_views, "oauth2_provider"), namespace="oauth2_provider"
-                ),
+    [
+        path("__debug__/", include("debug_toolbar.urls")),
+        path(
+            "o/",
+            include(
+                (oauth2_endpoint_views, "oauth2_provider"), namespace="oauth2_provider"
             ),
-            path("admin/", admin.site.urls) if settings.ENVIRONMENT == "development" else None,
-            path(ROUTE_BASE_VERSION, include("apps.portfolio.routes.api")),
-            path(ROUTE_BASE_VERSION, include("apps.users.routes.api")),
-            path("api-auth/", include("rest_framework.urls")),
-        ]
-        + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-        + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+        ),
+        (
+            path("admin/", admin.site.urls)
+            if settings.ENVIRONMENT == "development"
+            else path("", include([]))
+        ),
+        # path(ROUTE_BASE_VERSION, include("apps.portfolio.routes")),
+        # path(ROUTE_BASE_VERSION, include("apps.users.routes")),
+    ]
+    + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 )

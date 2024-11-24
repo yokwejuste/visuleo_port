@@ -29,8 +29,6 @@ TENANT_APPS = [
     "django_tenants",
     "rest_framework",
     "oauth2_provider",
-    "drf_spectacular",
-    "drf_spectacular_sidecar",
     "django_filters",
     "corsheaders",
     "simple_history",
@@ -55,8 +53,6 @@ SHARED_APPS = [
     "rest_framework",
     "oauth2_provider",
     "django_filters",
-    "drf_spectacular",
-    "drf_spectacular_sidecar",
     "corsheaders",
     "simple_history",
     "allauth",
@@ -73,7 +69,6 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
         "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
     ],
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
@@ -101,20 +96,5 @@ OAUTH2_PROVIDER = {
     },
 }
 
-# API versioning and configuration
-API_VERSION = os.environ.get("API_VERSION", "v1")
-API_DOC_TITLE = os.environ.get("API_DOC_TITLE", "API Documentation")
-API_DOC_DESCRIPTION = load_documentation("api_description.md")
-ROUTE_BASE_VERSION = os.environ.get("ROUTE_BASE_VERSION", f"/api/{API_VERSION}/")
-
-SPECTACULAR_SETTINGS = {
-    'TITLE': API_DOC_TITLE,
-    'DESCRIPTION': API_DOC_DESCRIPTION,
-    'VERSION': API_VERSION,
-    'SERVE_INCLUDE_SCHEMA': False,
-    'SWAGGER_UI_DIST': 'SIDECAR',
-    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
-    'REDOC_DIST': 'SIDECAR',
-}
-
 ENVIRONMENT = os.environ.get("ENVIRONMENT", "development")
+ROUTE_BASE_VERSION = 'v1'
