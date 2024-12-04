@@ -2,9 +2,7 @@ from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
 
 from visuleo_port.settings.extra import *
-import os
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 load_dotenv(dotenv_path=os.path.join(BASE_DIR, ".env"))
@@ -18,15 +16,25 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
+
+INTERNAL_IPS = os.getenv("INTERNAL_IPS", "").split(", ")
+
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(", ")
 
 # Application definition
+
+UTILS_APPS = [
+    "debug_toolbar",
+    'django_extensions',
+]
 
 INSTALLED_APPS = list(SHARED_APPS) + [
     app for app in TENANT_APPS if app not in SHARED_APPS
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+INSTALLED_APPS += UTILS_APPS
+
 
 LANGUAGES = (("en", _("English")), ("fr", _("French")))
 
@@ -53,8 +61,10 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
-            os.path.join(BASE_DIR, "templates"),
-            os.path.join(BASE_DIR, "templates", "visuleo_port"),
+            os.path.join(BASE_DIR, "apps/users/../../templates"),
+            os.path.join(BASE_DIR, "apps", "portfolio", "templates"),
+            os.path.join(BASE_DIR, "apps", "users", "../../templates"),
+            os.path.join(BASE_DIR, "apps", "theme", "templates"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -105,7 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
 SITE_ID = 1
 AUTH_USER_MODEL = "users.VisuleoUser"
 
-DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
@@ -125,7 +135,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
 STATIC_URL = "static/"
 
 STORAGES = {
@@ -135,7 +144,17 @@ STORAGES = {
 }
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "staticfiles"),
+]
+
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+COMPRESS_ROOT = os.path.join(BASE_DIR, "static")
+
+COMPRESS_ENABLED = True
+
+STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
 
 PASSWORD_RESET_TIMEOUT = 14400
 

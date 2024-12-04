@@ -8,24 +8,32 @@ class Categories(BaseModel):
     """
     Model that represents a category.
     """
+
     name = models.CharField(
-        _('name'),
+        _("name"),
         max_length=255,
-        help_text=_('Name of the category.'),
+        help_text=_("Name of the category."),
+    )
+    slug = models.SlugField(
+        _("slug"),
+        max_length=255,
+        unique=True,
+        help_text=_("Slug of the category."),
     )
     description = models.TextField(
-        _('description'),
-        help_text=_('Description of the category.'),
+        _("description"),
+        help_text=_("Description of the category."),
     )
 
     class Meta:
-        verbose_name = _('category')
-        verbose_name_plural = _('categories')
-        ordering = ('name',)
+        verbose_name = _("category")
+        verbose_name_plural = _("categories")
+        ordering = ("name",)
+        db_table = "categories"
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Categories, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
+        return str(self.name)

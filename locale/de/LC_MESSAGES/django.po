@@ -137,11 +137,11 @@ msgid "Date and time when this object was created."
 msgstr ""
 
 #: apps/users/models/base_model.py:48
-msgid "modified"
+msgid "updated"
 msgstr ""
 
 #: apps/users/models/base_model.py:50
-msgid "Date and time when this object was last modified."
+msgid "Date and time when this object was last updated."
 msgstr ""
 
 #: apps/users/models/base_model.py:53
@@ -233,7 +233,7 @@ msgid "create"
 msgstr ""
 
 #: venv/lib/python3.10/site-packages/auditlog/models.py:323
-msgid "update"
+msgid "updated"
 msgstr ""
 
 #: venv/lib/python3.10/site-packages/auditlog/models.py:324
@@ -297,7 +297,7 @@ msgid "Created {repr:s}"
 msgstr ""
 
 #: venv/lib/python3.10/site-packages/auditlog/models.py:376
-msgid "Updated {repr:s}"
+msgid "updated {repr:s}"
 msgstr ""
 
 #: venv/lib/python3.10/site-packages/auditlog/models.py:378
@@ -1550,7 +1550,7 @@ msgstr ""
 
 #: venv/lib/python3.10/site-packages/django_tenants/templates/admin/django_tenants/tenant/change_form.html:10
 msgid ""
-"Can't update tenant outside it's own schema or the public schema. Current "
+"Can't updated tenant outside it's own schema or the public schema. Current "
 "schema is "
 msgstr ""
 

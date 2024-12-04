@@ -1,10 +1,1 @@
-# @global-owner1 and @global-owner2 will be requested for
-# review when someone opens a pull request.
-*       @yokwejuste @LL-Etiane
-
-# For any request of JavaScript files, @mankaache will be requested for review.
-*.js    @mankaache
-
-
-# Any file in the .github directory will be reviewed by @yokwejuste
-.github/ @yokwejuste
+@iamyokwejuste @yokwejuste

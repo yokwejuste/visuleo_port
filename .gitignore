@@ -81,3 +81,4 @@ lib/
 static/
 media/
 .venv/
+node_modules/

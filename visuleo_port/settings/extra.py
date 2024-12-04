@@ -1,5 +1,4 @@
 import os
-from utils import load_documentation
 
 # django tenant conf
 TENANT_MODEL = "users.Client"
@@ -12,6 +11,10 @@ EXTRA_MIDDLEWARE = [
     "apps.users.middlewares.django_tenant.TenantMiddleware",
     "simple_history.middleware.HistoryRequestMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "apps.users.middlewares.UserTracingMiddleware",
+    'django_tenants.middleware.main.TenantMainMiddleware',
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
+    'livereload.middleware.LiveReloadScript',
 ]
 INTERNAL_IPS = [
     "127.0.0.1",
@@ -27,7 +30,6 @@ TENANT_APPS = [
     "apps.portfolio",
     "apps.users",
     "django_tenants",
-    "rest_framework",
     "oauth2_provider",
     "django_filters",
     "corsheaders",
@@ -35,10 +37,9 @@ TENANT_APPS = [
     "allauth",
     "allauth.account",
     "storages",
-    "debug_toolbar",
 ]
 
-PUBLIC_SCHEMA_URLCONF = "visuleo_port.urls_public"
+PUBLIC_SCHEMA_URLCONF = "visuleo_port.urls"
 
 SHARED_APPS = [
     "django.contrib.admin",
@@ -47,40 +48,28 @@ SHARED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "apps.portfolio",
-    "apps.users",
+    'django_browser_reload',
     "django_tenants",
-    "rest_framework",
+    "allauth.account",
     "oauth2_provider",
     "django_filters",
     "corsheaders",
     "simple_history",
     "allauth",
-    "allauth.account",
     "storages",
-    "debug_toolbar",
+    'livereload',
+    'compressor',
+    "passkeys",
+    "apps.portfolio",
+    "apps.users",
 ]
-
-# rest framework config
-REST_FRAMEWORK = {
-    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.TokenAuthentication",
-        "rest_framework.authentication.SessionAuthentication",
-        "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
-    ],
-    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
-    "TEST_REQUEST_DEFAULT_FORMAT": "json",
-    "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 10,
-}
 
 # django auth and auth toolkit
 
 AUTHENTICATION_BACKENDS = [
-    "django.contrib.auth.backends.ModelBackend",
+    "passkeys.backend.PasskeyModelBackend",
     "oauth2_provider.backends.OAuth2Backend",
+    "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
@@ -97,4 +86,4 @@ OAUTH2_PROVIDER = {
 }
 
 ENVIRONMENT = os.environ.get("ENVIRONMENT", "development")
-ROUTE_BASE_VERSION = 'v1'
+ROUTE_BASE_VERSION = 'v1/'

@@ -1,0 +1,148 @@
+{% extends "_base.html" %}
+{% block content %}
+<div class="min-h-screen flex justify-center items-start py-10 px-6 md:px-16 lg:px-24 xl:px-32">
+  <div class="grid grid-cols-12 gap-8 w-full">
+    <!-- Sidebar Navigation -->
+    <div class="col-span-2 hidden md:flex flex-col space-y-8">
+      <div class="space-y-4">
+        <img src="https://via.placeholder.com/150" alt="Profile Image" class="w-24 h-24 rounded-full mx-auto">
+        <h2 class="text-center text-xl font-semibold">Akira Karlsson</h2>
+        <p class="text-center text-sm text-gray-300">Digital Designer</p>
+      </div>
+      <nav class="flex flex-col space-y-4">
+        <a href="#" class="flex items-center text-lg space-x-3 px-4 py-2 rounded hover:bg-gray-800 transition duration-200">
+          <i class="fas fa-cogs"></i>
+          <span>Services</span>
+        </a>
+        <a href="#" class="flex items-center text-lg space-x-3 px-4 py-2 rounded hover:bg-gray-800 transition duration-200">
+          <i class="fas fa-clipboard-list"></i>
+          <span>Projects</span>
+        </a>
+        <a href="#" class="flex items-center text-lg space-x-3 px-4 py-2 rounded hover:bg-gray-800 transition duration-200">
+          <i class="fas fa-address-book"></i>
+          <span>Contact</span>
+        </a>
+        <a href="#" class="flex items-center text-lg space-x-3 px-4 py-2 rounded hover:bg-gray-800 transition duration-200">
+          <i class="fas fa-info-circle"></i>
+          <span>About</span>
+        </a>
+        <a href="#" class="flex items-center text-lg space-x-3 px-4 py-2 rounded hover:bg-gray-800 transition duration-200">
+          <i class="fas fa-envelope"></i>
+          <span>Newsletter</span>
+        </a>
+      </nav>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="col-span-12 md:col-span-7 lg:col-span-8 space-y-8">
+      <!-- Projects Section -->
+      <div class="bg-gray-800 rounded-lg p-6">
+        <h2 class="text-2xl font-semibold mb-6">Projects</h2>
+        <div class="space-y-4">
+          <div class="bg-gray-900 p-4 rounded flex justify-between items-center">
+            <div>
+              <h3 class="text-xl font-semibold">Cyberpunk</h3>
+              <p class="text-gray-400">UX Design</p>
+            </div>
+            <a href="#" class="text-blue-500 hover:underline">View</a>
+          </div>
+          <div class="bg-gray-900 p-4 rounded flex justify-between items-center">
+            <div>
+              <h3 class="text-xl font-semibold">Future</h3>
+              <p class="text-gray-400">UI Design</p>
+            </div>
+            <a href="#" class="text-blue-500 hover:underline">View</a>
+          </div>
+          <div class="bg-gray-900 p-4 rounded flex justify-between items-center">
+            <div>
+              <h3 class="text-xl font-semibold">Neon Lights</h3>
+              <p class="text-gray-400">Web Design</p>
+            </div>
+            <a href="#" class="text-blue-500 hover:underline">View</a>
+          </div>
+          <div class="bg-gray-900 p-4 rounded flex justify-between items-center">
+            <div>
+              <h3 class="text-xl font-semibold">Matrix</h3>
+              <p class="text-gray-400">No Code</p>
+            </div>
+            <a href="#" class="text-blue-500 hover:underline">View</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- About Section -->
+      <div class="bg-gray-800 rounded-lg p-6">
+        <h2 class="text-2xl font-semibold mb-6">About</h2>
+        <div class="flex items-center space-x-4">
+          <img src="https://via.placeholder.com/150" alt="About Image" class="w-24 h-24 rounded-lg">
+          <p>I'm Akira, digital designer, specializing in crafting amazing user experiences. With a deep-rooted passion for design and a keen eye for detail, I strive to create visually stunning and functional digital solutions that leave a lasting impact.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Sidebar Widgets -->
+    <div class="col-span-12 md:col-span-3 lg:col-span-2 space-y-8">
+      <!-- Tools Widget -->
+      <div class="bg-gray-800 rounded-lg p-6">
+        <h2 class="text-2xl font-semibold mb-6">Tools</h2>
+        <ul class="space-y-4">
+          <li>
+            <a href="#" class="flex items-center space-x-3">
+              <img src="https://via.placeholder.com/150" alt="Framer" class="w-10 h-10 md:w-12 md:h-12">
+              <span>Framer</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center space-x-3">
+              <img src="https://via.placeholder.com/150" alt="Webflow" class="w-10 h-10 md:w-12 md:h-12">
+              <span>Webflow</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center space-x-3">
+              <img src="https://via.placeholder.com/150" alt="Figma" class="w-10 h-10 md:w-12 md:h-12">
+              <span>Figma</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center space-x-3">
+              <img src="https://via.placeholder.com/150" alt="Cron" class="w-10 h-10 md:w-12 md:h-12">
+              <span>Cron</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center space-x-3">
+              <img src="https://via.placeholder.com/150" alt="Arc" class="w-10 h-10 md:w-12 md:h-12">
+              <span>Arc</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Playlist Widget -->
+      <div class="bg-gray-800 rounded-lg p-6">
+        <h2 class="text-2xl font-semibold mb-6">Playlist</h2>
+        <div class="bg-gray-900 p-4 md:p-6 rounded-lg">
+          <p class="text-lg font-semibold">'23 - April</p>
+          <p class="text-gray-400 mb-4">Pawel Gola</p>
+          <div class="space-y-2">
+            <p class="flex justify-between">
+              <span>The XX Intro - Remix</span>
+              <span>2:07</span>
+            </p>
+            <p class="flex justify-between">
+              <span>If You Wanna</span>
+              <span>2:39</span>
+            </p>
+            <p class="flex justify-between">
+              <span>Broken</span>
+              <span>3:18</span>
+            </p>
+          </div>
+          <button class="w-full mt-4 bg-green-500 hover:bg-green-600 text-white py-2 rounded">More Music</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

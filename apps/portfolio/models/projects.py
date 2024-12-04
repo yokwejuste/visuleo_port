@@ -1,7 +1,8 @@
 from django.db import models
+from django.urls import reverse
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
-from django.urls import reverse
+
 from apps.users.models import BaseModel
 
 
@@ -32,6 +33,8 @@ class Projects(BaseModel):
     )
     url = models.URLField(
         _("url"),
+        null=True,
+        blank=True,
         max_length=255,
         help_text=_("URL for the project."),
     )
@@ -50,9 +53,10 @@ class Projects(BaseModel):
     class Meta:
         verbose_name = _("project")
         verbose_name_plural = _("projects")
+        db_table = "projects"
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
     def get_absolute_url(self):
         return reverse("portfolio:project-detail", kwargs={"slug": self.slug})
@@ -87,10 +91,10 @@ class ProjectImages(BaseModel):
     class Meta:
         verbose_name = _("project image")
         verbose_name_plural = _("project images")
+        db_table = "project_images"
 
     def save(self, *args, **kwargs):
-        self.project_image_id = self.project.images.count() + 1
         super(ProjectImages, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.project.name
+        return str(self.project.name)
