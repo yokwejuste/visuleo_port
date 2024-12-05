@@ -3,6 +3,7 @@ import os
 # django tenant conf
 TENANT_MODEL = "users.Client"
 TENANT_DOMAIN_MODEL = "users.Domain"
+
 DATABASE_ROUTERS = ("django_tenants.routers.TenantSyncRouter",)
 
 EXTRA_MIDDLEWARE = [
@@ -12,12 +13,9 @@ EXTRA_MIDDLEWARE = [
     "simple_history.middleware.HistoryRequestMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     "apps.users.middlewares.UserTracingMiddleware",
-    'django_tenants.middleware.main.TenantMainMiddleware',
+    "django_tenants.middleware.main.TenantMainMiddleware",
     "django_browser_reload.middleware.BrowserReloadMiddleware",
-    'livereload.middleware.LiveReloadScript',
-]
-INTERNAL_IPS = [
-    "127.0.0.1",
+    "livereload.middleware.LiveReloadScript",
 ]
 
 TENANT_APPS = [
@@ -48,7 +46,7 @@ SHARED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'django_browser_reload',
+    "django_browser_reload",
     "django_tenants",
     "allauth.account",
     "oauth2_provider",
@@ -57,8 +55,8 @@ SHARED_APPS = [
     "simple_history",
     "allauth",
     "storages",
-    'livereload',
-    'compressor',
+    "livereload",
+    "compressor",
     "passkeys",
     "apps.portfolio",
     "apps.users",
@@ -86,4 +84,4 @@ OAUTH2_PROVIDER = {
 }
 
 ENVIRONMENT = os.environ.get("ENVIRONMENT", "development")
-ROUTE_BASE_VERSION = 'v1/'
+ROUTE_BASE_VERSION = "v1/"
