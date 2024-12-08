@@ -1,6 +1,5 @@
 import os
 
-# django tenant conf
 TENANT_MODEL = "users.Client"
 TENANT_DOMAIN_MODEL = "users.Domain"
 
@@ -27,7 +26,6 @@ TENANT_APPS = [
     "django.contrib.staticfiles",
     "apps.portfolio",
     "apps.users",
-    "django_tenants",
     "oauth2_provider",
     "django_filters",
     "corsheaders",
@@ -61,8 +59,6 @@ SHARED_APPS = [
     "apps.portfolio",
     "apps.users",
 ]
-
-# django auth and auth toolkit
 
 AUTHENTICATION_BACKENDS = [
     "passkeys.backend.PasskeyModelBackend",

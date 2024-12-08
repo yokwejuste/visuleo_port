@@ -45,24 +45,36 @@ if settings.DEBUG:
         ),
     ]
 
-urlpatterns = (
-        [
-            path("__debug__/", include("debug_toolbar.urls")),
-            path("__reload__/", include("django_browser_reload.urls")),
-            path(
-                "o/",
-                include(
-                    (oauth2_endpoint_views, "oauth2_provider"), namespace="oauth2_provider"
+if settings.DEBUG:
+    urlpatterns = (
+            [
+                path("__debug__/", include("debug_toolbar.urls")),
+                path("__reload__/", include("django_browser_reload.urls")),
+                path(
+                    "o/",
+                    include(
+                        (oauth2_endpoint_views, "oauth2_provider"), namespace="oauth2_provider"
+                    ),
                 ),
-            ),
-            (
-                path("admin/", admin.site.urls)
-                if settings.ENVIRONMENT == "local"
-                else path("", include([]))
-            ),
-            # path(ROUTE_BASE_VERSION, include("apps.portfolio.routes")),
-            path(ROUTE_BASE_VERSION, include("apps.users.routes")),
-        ]
-        + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-        + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-)
+                (
+                    path("admin/", admin.site.urls)
+                    if settings.ENVIRONMENT == "local"
+                    else path("", include([]))
+                ),
+                path(ROUTE_BASE_VERSION, include(
+                    ("apps.users.routes", "users"),
+                ), name="users"),
+            ]
+            + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+            + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    )
+else:
+    urlpatterns = (
+            [
+                path(ROUTE_BASE_VERSION, include(
+                    ("apps.users.routes", "users"),
+                ), name="users"),
+            ]
+            + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+            + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    )

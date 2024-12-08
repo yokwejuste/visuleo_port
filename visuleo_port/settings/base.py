@@ -7,13 +7,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 
 load_dotenv(dotenv_path=os.path.join(BASE_DIR, ".env"))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
@@ -21,8 +16,6 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 INTERNAL_IPS = os.getenv("INTERNAL_IPS", "").split(", ")
 
 CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(", ")
-
-# Application definition
 
 UTILS_APPS = [
     "debug_toolbar",
@@ -61,10 +54,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
-            os.path.join(BASE_DIR, "apps/users/../../templates"),
-            os.path.join(BASE_DIR, "apps", "portfolio", "templates"),
-            os.path.join(BASE_DIR, "apps", "users", "../../templates"),
-            os.path.join(BASE_DIR, "apps", "theme", "templates"),
+            os.path.join(BASE_DIR, "templates"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -80,9 +70,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "visuleo_port.wsgi.application"
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 DATABASES = {
     "default": {
         "ENGINE": "django_tenants.postgresql_backend",
@@ -93,9 +80,6 @@ DATABASES = {
         "PORT": os.environ.get("DB_PORT", 5432),
     }
 }
-
-# Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -120,9 +104,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
 
-# Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
 LANGUAGE_CODE = "en"
 
 TIME_ZONE = "Africa/Douala"
@@ -133,8 +114,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
 STATIC_URL = "static/"
 
 STORAGES = {
@@ -142,6 +121,7 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 STATICFILES_DIRS = [
@@ -150,9 +130,9 @@ STATICFILES_DIRS = [
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-COMPRESS_ROOT = os.path.join(BASE_DIR, "static")
+COMPRESS_ROOT = STATIC_ROOT
 
-COMPRESS_ENABLED = True
+COMPRESS_ENABLED = os.environ.get("COMPRESS_ENABLED", "False").lower() == "true"
 
 STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
 

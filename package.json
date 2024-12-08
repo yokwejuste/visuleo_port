@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "tailwindcss -i ./static/css/styles.css -o ./static/css/output.css --minify",
+    "build": "tailwindcss -i ./static/css/styles.css -o ./static/css/tailwind.css --minify",
     "dev": "nodemon"
   },
   "devDependencies": {
