@@ -1,0 +1,5 @@
+components:
+  card: "components/card.html"
+  button: "components/button.html"
+  info_box: "components/info_box.html"
+  team_member_card: "components/team_member_card.html"

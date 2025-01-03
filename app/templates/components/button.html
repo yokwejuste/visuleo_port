@@ -1,0 +1,21 @@
+{% load slippers %}
+
+<a
+        href="{{ link }}"
+        target="{% if external %}_blank{% else %}_self{% endif %}"
+        class="inline-flex items-center justify-center rounded-md
+        {% if primary %}
+            inline-flex items-center justify-center rounded-md bg-white px-7 py-[14px] text-center text-base font-medium text-dark shadow-1 hover:bg-gray-2 hover:text-body-color
+        {% elif secondary %}
+            flex items-center gap-4 rounded-md bg-white/[0.12] px-6 py-[14px] text-base font-medium text-white transition duration-300 ease-in-out hover:bg-white hover:text-dark
+        {% else %}
+            text-dark hover:text-body-color
+        {% endif %}
+    "
+>
+    {% if icon %}
+        <i class="text-2xl {{ icon }}"></i>
+    {% endif %}
+
+    {{ label }}
+</a>

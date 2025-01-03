@@ -78,8 +78,7 @@ bin/
 lib/
 .env
 .env.dev
-staticfiles/
-media/
+app/staticfiles/
+app/media/
 .venv/
 node_modules/
-static/
