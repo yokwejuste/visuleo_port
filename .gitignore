@@ -82,3 +82,13 @@ app/staticfiles/
 app/media/
 .venv/
 node_modules/
+
+# while waiting for the bucket configuration
+app/static/allauth_ui/
+app/static/admin/
+app/static/debug_toolbar/
+app/static/django_extensions/
+app/static/django-browser-reload/
+app/static/passkeys/
+app/static/slippers/
+app/static/fonts/
