@@ -10,10 +10,10 @@ from app.dj_apps.users.models import VisuleoUser, UserTag
 def add_user_tag(sender, instance, created, **kwargs):
     if created and instance.is_superuser:
         user_tag, created = UserTag.objects.get_or_create(name="superuser")
-        instance.tags.add(user_tag)
+        instance.user_tag.add(user_tag)
     elif created:
         user_tag, created = UserTag.objects.get_or_create(name="user")
-        instance.tags.add(user_tag)
+        instance.user_tag.add(user_tag)
 
 
 @receiver(post_save)
