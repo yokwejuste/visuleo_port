@@ -13,7 +13,7 @@
         "project_name": "visuleoport",
         "runtime": "python3.12",
         "s3_bucket": "zappa-bfklimylw",
-        "slim_handler": true
+        "slim_handler": false
     },
     "stage_based": false
 }
