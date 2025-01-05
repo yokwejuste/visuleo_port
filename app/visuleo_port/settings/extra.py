@@ -1,7 +1,8 @@
 import os
 
 from django.templatetags.static import static
-
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 
 EXTRA_MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -88,8 +89,12 @@ UNFOLD = {
         "light": lambda request: static("images/logo/logo.svg"),
         "dark": lambda request: static("images/logo/logo-white.svg"),
     },
+    "SITE_SYMBOL": "speed",
+    "show_search": False,
+    "show_all_applications": False,
     "SHOW_HISTORY": True,
     "SHOW_VIEW_ON_SITE": True,
+    "ENVIRONMENT": "Development",
     "LOGIN": {
         "image": lambda request: static("images/login_side.svg"),
     },
@@ -116,6 +121,55 @@ UNFOLD = {
             "950": "28 58 43"
         }
     },
+    "navigation": [
+        {
+            "title": _("Navigation"),
+            "separator": True,
+            "collapsible": True,
+            "items": [
+                {
+                    "title": _("Dashboard"),
+                    "icon": "dashboard",
+                    "url": reverse_lazy("admin:index"),
+                },
+                {
+                    "title": _("Users"),
+                    "icon": "people",
+                    "url": reverse_lazy("admin:users_visuleouser_changelist"),
+                },
+                {
+                    "title": _("Portfolio"),
+                    "icon": "work",
+                    "url": reverse_lazy("admin:portfolio_projects_changelist"),
+                },
+            ],
+        },
+    ],
+    "TABS": [
+        {
+            "items": [
+                {
+                    "models": [
+                        "users.VisuleoUser",
+                        "users.UserTag",
+                    ],
+                    "label": "Users",
+                    "icon": "people",
+                    "link": reverse_lazy("admin:users_visuleouser_changelist"),
+                },
+                {
+                    "models": [
+                        "portfolio.Projects",
+                        "portfolio.Categories",
+                        "portfolio.Skills",
+                    ],
+                    "label": "Portfolio",
+                    "icon": "work",
+                    "link": reverse_lazy("admin:portfolio_projects_changelist"),
+                },
+            ],
+        }
+    ],
     "EXTENSIONS": {
         "modeltranslation": {
             "flags": {
