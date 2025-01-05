@@ -22,9 +22,7 @@ UTILS_APPS = [
     'django_extensions',
 ]
 
-INSTALLED_APPS = list(SHARED_APPS) + [
-    app for app in TENANT_APPS if app not in SHARED_APPS
-]
+INSTALLED_APPS = SHARED_APPS
 
 if DEBUG:
     INSTALLED_APPS += UTILS_APPS
@@ -86,7 +84,7 @@ WSGI_APPLICATION = "app.visuleo_port.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django_tenants.postgresql_backend",
+        "ENGINE": "django.db.backends.postgresql",
         "NAME": os.environ.get("DB_NAME"),
         "USER": os.environ.get("DB_USERNAME"),
         "PASSWORD": os.environ.get("DB_PASSWORD"),

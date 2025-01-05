@@ -2,37 +2,15 @@ import os
 
 from django.templatetags.static import static
 
-TENANT_MODEL = "users.Client"
-TENANT_DOMAIN_MODEL = "users.Domain"
-
-DATABASE_ROUTERS = ("django_tenants.routers.TenantSyncRouter",)
 
 EXTRA_MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'allauth.account.middleware.AccountMiddleware',
     "corsheaders.middleware.CorsMiddleware",
-    "app.dj_apps.users.middlewares.django_tenant.TenantMiddleware",
     "simple_history.middleware.HistoryRequestMiddleware",
     "app.dj_apps.users.middlewares.UserTracingMiddleware",
-    "django_tenants.middleware.main.TenantMainMiddleware",
     "django_browser_reload.middleware.BrowserReloadMiddleware",
     "livereload.middleware.LiveReloadScript",
-]
-
-TENANT_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    "app.dj_apps.portfolio",
-    "app.dj_apps.users",
-    "django_filters",
-    "corsheaders",
-    "simple_history",
-    "storages",
-    "allauth",
 ]
 
 PUBLIC_SCHEMA_URLCONF = "app.visuleo_port.urls"
@@ -52,7 +30,6 @@ SHARED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_browser_reload",
-    "django_tenants",
     "django_filters",
     "corsheaders",
     "simple_history",
