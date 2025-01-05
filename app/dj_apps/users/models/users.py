@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 from django.utils import timezone
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 from app.dj_apps.users.models import BaseModel
@@ -27,10 +28,8 @@ class VisuleoUserManager(BaseUserManager):
         """
         Create and save a Visuleo superuser with the given email and password.
         """
-        extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
-        extra_fields.setdefault("is_email_verified", True)
-        extra_fields.setdefault("is_phone_number_verified", True)
+        extra_fields.setdefault("is_staff", True)
         return self.create_user(email, password, **extra_fields)
 
 
@@ -94,6 +93,11 @@ class VisuleoUser(BaseModel, AbstractBaseUser):
         default=timezone.now,
         help_text=_("Date and time when this user joined."),
     )
+    is_staff = models.BooleanField(
+        _("is staff"),
+        default=False,
+        help_text=_("Boolean field to mark if this user is staff."),
+    )
     user_tag = models.ManyToManyField(
         "UserTag",
         verbose_name=_("user tag"),
@@ -118,6 +122,12 @@ class VisuleoUser(BaseModel, AbstractBaseUser):
     def __str__(self) -> str:
         return str(self.email)
 
+    def has_perm(self, perm, obj=None):
+        return self.is_superuser
+
+    def has_module_perms(self, app_label):
+        return self.is_superuser
+
 
 class UserTag(BaseModel):
     """
@@ -129,6 +139,14 @@ class UserTag(BaseModel):
         max_length=255,
         help_text=_("Name of the user type."),
     )
+    slug = models.SlugField(
+        _("slug"),
+        max_length=255,
+        unique=True,
+        null=True,
+        blank=True,
+        help_text=_("Slug of the user type."),
+    )
 
     class Meta:
         verbose_name = _("user type")
@@ -138,3 +156,7 @@ class UserTag(BaseModel):
 
     def __str__(self) -> str:
         return str(self.name)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name.lower())
+        return super().save(*args, **kwargs)

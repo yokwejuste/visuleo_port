@@ -9,7 +9,7 @@ load_dotenv(dotenv_path=os.path.join(BASE_DIR, ".env"))
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
-DEBUG = os.environ.get("DEBUG", "False").lower() in ["true", "1"]
+DEBUG = os.environ.get("DEBUG", "True").lower() in ["true", "1"]
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").replace(" ", "").split(",")
 
@@ -122,6 +122,13 @@ SESSION_CACHE_ALIAS = "default"
 
 LANGUAGE_CODE = "en"
 
+LANGUAGES = (
+    ("fr", _("French")),
+    ("en", _("English")),
+    ("de", _("German")),
+)
+
+
 TIME_ZONE = "Africa/Douala"
 
 USE_I18N = True
@@ -158,12 +165,10 @@ else:  # Using local storage for development
     MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "app", "media")
 
-COMPRESS_ENABLED = os.environ.get("COMPRESS_ENABLED", "False").lower() in ["true", "1"]
 
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-    'compressor.finders.CompressorFinder',
 ]
 
 PASSWORD_RESET_TIMEOUT = 14400

@@ -1,5 +1,7 @@
 import os
 
+from django.templatetags.static import static
+
 TENANT_MODEL = "users.Client"
 TENANT_DOMAIN_MODEL = "users.Domain"
 
@@ -26,18 +28,23 @@ TENANT_APPS = [
     "django.contrib.staticfiles",
     "app.dj_apps.portfolio",
     "app.dj_apps.users",
-    "oauth2_provider",
     "django_filters",
     "corsheaders",
     "simple_history",
     "storages",
-    "allauth_ui",
     "allauth",
 ]
 
 PUBLIC_SCHEMA_URLCONF = "app.visuleo_port.urls"
 
 SHARED_APPS = [
+    "unfold",
+    "unfold.contrib.filters",
+    "unfold.contrib.forms",
+    "unfold.contrib.inlines",
+    "unfold.contrib.import_export",
+    "unfold.contrib.guardian",
+    "unfold.contrib.simple_history",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -46,12 +53,9 @@ SHARED_APPS = [
     "django.contrib.staticfiles",
     "django_browser_reload",
     "django_tenants",
-    "compressor",
-    "oauth2_provider",
     "django_filters",
     "corsheaders",
     "simple_history",
-    "allauth_ui",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
@@ -68,7 +72,6 @@ SHARED_APPS = [
 
 AUTHENTICATION_BACKENDS = [
     "passkeys.backend.PasskeyModelBackend",
-    "oauth2_provider.backends.OAuth2Backend",
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
@@ -95,3 +98,54 @@ CELERY_TASK_SERIALIZER = os.getenv('CELERY_TASK_SERIALIZER', 'json')
 CELERY_RESULT_SERIALIZER = os.getenv('CELERY_RESULT_SERIALIZER', 'json')
 CELERY_TIMEZONE = os.getenv('CELERY_TIMEZONE', 'UTC')
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+
+# # Django Unfold Admin Setting
+UNFOLD = {
+    "SHOW_LANGUAGES": True,
+    "SITE_ICON": {
+        "light": lambda request: static("images/logo/logo.svg"),
+        "dark": lambda request: static("images/logo/logo-white.svg"),
+    },
+    "SITE_LOGO": {
+        "light": lambda request: static("images/logo/logo.svg"),
+        "dark": lambda request: static("images/logo/logo-white.svg"),
+    },
+    "SHOW_HISTORY": True,
+    "SHOW_VIEW_ON_SITE": True,
+    "LOGIN": {
+        "image": lambda request: static("images/team/team-01.png"),
+    },
+    "COLORS": {
+        "font": {
+            "subtle-light": "107 114 128",
+            "subtle-dark": "156 163 175",
+            "default-light": "75 85 99",
+            "default-dark": "209 213 219",
+            "important-light": "17 24 39",
+            "important-dark": "243 244 246",
+        },
+        "primary": {
+            "50": "229 246 240",
+            "100": "205 237 226",
+            "200": "178 228 211",
+            "300": "150 218 196",
+            "400": "117 203 178",
+            "500": "89 192 156",
+            "600": "70 164 124",
+            "700": "54 131 99",
+            "800": "47 111 84",
+            "900": "36 83 63",
+            "950": "28 58 43"
+        }
+    },
+    "EXTENSIONS": {
+        "modeltranslation": {
+            "flags": {
+                "en": "🇬🇧",
+                "fr": "🇫🇷",
+                "nl": "🇧🇪",
+            },
+        },
+    },
+}
