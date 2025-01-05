@@ -126,14 +126,14 @@ if not DEBUG:
     # AWS Credentials
     AWS_ACCESS_KEY_ID = os.environ.get("S3_ACCESS_KEY_ID")
     AWS_SECRET_ACCESS_KEY = os.environ.get("S3_SECRET_ACCESS_KEY")
-    AWS_STORAGE_BUCKET_NAME = os.environ.get("S3_STORAGE_BUCKET_NAME")
+    AWS_STORAGE_BUCKET_NAME = str(os.environ.get("S3_STORAGE_BUCKET_NAME")).strip()
     AWS_S3_REGION_NAME = os.environ.get("S3_REGION_NAME", "us-east-1")
     AWS_QUERYSTRING_AUTH = False
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
 
     # URL for serving static and media files
-    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
-    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/".strip()
+    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/".strip()
 
     # Define STATIC_ROOT even if using S3 for management commands
     STATIC_ROOT = os.path.join(BASE_DIR, "app", "static")
