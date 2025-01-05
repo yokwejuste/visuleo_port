@@ -4,36 +4,27 @@ from dotenv import load_dotenv
 from app.visuleo_port.settings.extra import *
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-
 load_dotenv(dotenv_path=os.path.join(BASE_DIR, ".env"))
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
+# Set DEBUG mode from environment variable
 DEBUG = os.environ.get("DEBUG", "True").lower() in ["true", "1"]
 
+
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").replace(" ", "").split(",")
-
 INTERNAL_IPS = os.getenv("INTERNAL_IPS", "").split(",")
-
 CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
 
-UTILS_APPS = [
-    "debug_toolbar",
-    'django_extensions',
-]
+# Installed Apps
+UTILS_APPS = ["debug_toolbar", 'django_extensions']
+INSTALLED_APPS = SHARED_APPS + (UTILS_APPS if DEBUG else [])
 
-INSTALLED_APPS = SHARED_APPS
+# Language and Localization
+LANGUAGES = (("en", _("English")), ("fr", _("French")), ("de", _("German")))
+LOCALE_PATHS = [os.path.join(BASE_DIR, "app/locale")]
 
-if DEBUG:
-    INSTALLED_APPS += UTILS_APPS
-
-
-LANGUAGES = (("en", _("English")), ("fr", _("French")))
-
-LOCALE_PATHS = [
-    os.path.join(BASE_DIR, "app/locale"),
-]
-
+# Middleware Configuration
 INITIAL_MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -45,13 +36,15 @@ INITIAL_MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-MIDDLEWARE = INITIAL_MIDDLEWARE + EXTRA_MIDDLEWARE
+MIDDLEWARE = EXTRA_MIDDLEWARE + INITIAL_MIDDLEWARE
 
 if DEBUG:
     MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
 
+# URL Configuration
 ROOT_URLCONF = "app.visuleo_port.urls"
 
+# Template Configuration
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -73,15 +66,16 @@ TEMPLATES = [
             "builtins": [
                 "django.templatetags.static",
                 "slippers.templatetags.slippers",
-                "compressor.templatetags.compress",
                 "livereload.templatetags.livereload_tags",
             ],
         },
     },
 ]
 
+# WSGI Configuration
 WSGI_APPLICATION = "app.visuleo_port.wsgi.application"
 
+# Database Configuration
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -93,84 +87,71 @@ DATABASES = {
     }
 }
 
+# Password Validators
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
+# Authentication and Sessions
 SITE_ID = 1
-
 AUTH_USER_MODEL = "users.VisuleoUser"
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
-
 SESSION_CACHE_ALIAS = "default"
 
+# Internationalization
 LANGUAGE_CODE = "en"
-
-LANGUAGES = (
-    ("fr", _("French")),
-    ("en", _("English")),
-    ("de", _("German")),
-)
-
-
 TIME_ZONE = "Africa/Douala"
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 if not DEBUG:
-    # AWS Storage Configurations
+    # Production S3 Storage Settings
     DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-    STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
-    # AWS S3 Credentials
-    AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
-    AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-    AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
-    AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME", "us-east-1")
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+        },
+
+        "staticfiles": {
+            "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+        },
+    }
+
+    # AWS Credentials
+    AWS_ACCESS_KEY_ID = os.environ.get("S3_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = os.environ.get("S3_SECRET_ACCESS_KEY")
+    AWS_STORAGE_BUCKET_NAME = os.environ.get("S3_STORAGE_BUCKET_NAME")
+    AWS_S3_REGION_NAME = os.environ.get("S3_REGION_NAME", "us-east-1")
     AWS_QUERYSTRING_AUTH = False
-
-    # Custom URL for your static/media files
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+
+    # URL for serving static and media files
     STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
 
-else:  # Using local storage for development
-    STATIC_URL = "/static/"
+    # Define STATIC_ROOT even if using S3 for management commands
     STATIC_ROOT = os.path.join(BASE_DIR, "app", "static")
-
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, "app", "staticfiles"),
-    ]
-
+    MEDIA_ROOT = os.path.join(BASE_DIR, "app", "media")
+else:
+    # Local Storage Settings for Development
+    STATIC_URL = "/static/"
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, "app", "staticfiles")]
+    STATIC_ROOT = os.path.join(BASE_DIR, "app", "static")
     MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "app", "media")
 
+    STATICFILES_FINDERS = [
+        "django.contrib.staticfiles.finders.FileSystemFinder",
+        "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    ]
 
-STATICFILES_FINDERS = [
-    "django.contrib.staticfiles.finders.FileSystemFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-]
-
+# Other Settings
 PASSWORD_RESET_TIMEOUT = 14400
-
 MANIFEST_STRICT = False
-
 APPEND_SLASH = True
