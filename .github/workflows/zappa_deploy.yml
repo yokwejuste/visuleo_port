@@ -9,6 +9,7 @@ jobs:
   deploy:
     name: Deploy with Zappa
     runs-on: ubuntu-latest
+    environment: production
 
     steps:
       - name: Checkout Code
@@ -25,18 +26,23 @@ jobs:
           source .venv/bin/activate
           pip install --upgrade pip
           pip install -r requirements.txt
-          pip install zappa  # Ensure Zappa is installed in CI environment
+          pip install zappa
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Debug AWS Credentials
+        run: aws sts get-caller-identity
 
       - name: Deploy to AWS Lambda with Zappa
         env:
-          AWS_PROFILE: default
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
         run: |
           source .venv/bin/activate
           zappa deploy dev || zappa update dev
