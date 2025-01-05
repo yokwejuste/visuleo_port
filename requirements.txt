@@ -44,6 +44,7 @@ django-oauth-toolkit==3.0.1
 django-passkeys==1.2.7
 django-simple-history==3.7.0
 django-storages==1.14.4
+django-unfold==0.43.0
 django-widget-tweaks==1.5.0
 dnslib==0.9.25
 dnspython==2.7.0
