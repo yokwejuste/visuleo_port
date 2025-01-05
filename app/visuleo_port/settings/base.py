@@ -130,17 +130,33 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_URL = "/static/"
+if not DEBUG:
+    # AWS Storage Configurations
+    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+    STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
-STATIC_ROOT = os.path.join(BASE_DIR, "app", "static")
+    # AWS S3 Credentials
+    AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+    AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
+    AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME", "us-east-1")
+    AWS_QUERYSTRING_AUTH = False
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "app", "staticfiles"),
-]
+    # Custom URL for your static/media files
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "app", "media")
+else:  # Using local storage for development
+    STATIC_URL = "/static/"
+    STATIC_ROOT = os.path.join(BASE_DIR, "app", "static")
 
-COMPRESS_ROOT = STATIC_ROOT
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, "app", "staticfiles"),
+    ]
+
+    MEDIA_URL = "/media/"
+    MEDIA_ROOT = os.path.join(BASE_DIR, "app", "media")
 
 COMPRESS_ENABLED = os.environ.get("COMPRESS_ENABLED", "False").lower() in ["true", "1"]
 
