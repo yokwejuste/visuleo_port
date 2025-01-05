@@ -91,7 +91,7 @@ UNFOLD = {
     "SHOW_HISTORY": True,
     "SHOW_VIEW_ON_SITE": True,
     "LOGIN": {
-        "image": lambda request: static("images/team/team-01.png"),
+        "image": lambda request: static("images/login_side.svg"),
     },
     "COLORS": {
         "font": {
