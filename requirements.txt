@@ -25,6 +25,7 @@ click-didyoumean==0.3.1
 click-plugins==1.1.1
 click-repl==0.3.0
 cookiecutter==2.6.0
+cron-descriptor==1.4.5
 cryptography==42.0.8
 defusedxml==0.7.1
 dill==0.3.6
@@ -34,6 +35,8 @@ django-allauth-ui==1.5.3
 django-appconf==1.0.6
 django-auditlog==3.0.0
 django-browser-reload==1.17.0
+django-celery-beat==2.7.0
+django-celery-results==2.5.1
 django-compressor==4.5.1
 django-cors-headers==4.6.0
 django-debug-toolbar==4.4.6
@@ -44,6 +47,7 @@ django-oauth-toolkit==3.0.1
 django-passkeys==1.2.7
 django-simple-history==3.7.0
 django-storages==1.14.4
+django-timezone-field==7.0
 django-unfold==0.43.0
 django-widget-tweaks==1.5.0
 dnslib==0.9.25
@@ -95,6 +99,7 @@ Pygments==2.18.0
 PyJWT==2.10.1
 pyotp==2.9.0
 pyproject_hooks==1.2.0
+python-crontab==3.2.0
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 python-jose==3.3.0

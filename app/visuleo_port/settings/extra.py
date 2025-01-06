@@ -46,6 +46,8 @@ SHARED_APPS = [
     "passkeys",
     "app.dj_apps.portfolio",
     "app.dj_apps.users",
+    'django_celery_beat',
+    'django_celery_results',
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -147,28 +149,68 @@ UNFOLD = {
     ],
     "TABS": [
         {
+            "models": [
+                "users.VisuleoUser",
+                "users.UserTag",
+            ],
             "items": [
                 {
-                    "models": [
-                        "users.VisuleoUser",
-                        "users.UserTag",
-                    ],
-                    "label": "Users",
-                    "icon": "people",
+                    "title": _("User Management"),
                     "link": reverse_lazy("admin:users_visuleouser_changelist"),
-                },
-                {
-                    "models": [
-                        "portfolio.Projects",
-                        "portfolio.Categories",
-                        "portfolio.Skills",
-                    ],
-                    "label": "Portfolio",
-                    "icon": "work",
-                    "link": reverse_lazy("admin:portfolio_projects_changelist"),
+                    "permission": lambda request: request.user.has_perm("users.change_visuleouser"),
                 },
             ],
-        }
+            "label": "Users",
+            "icon": "people",
+        },
+        {
+            "models": [
+                "portfolio.Projects",
+                "portfolio.Categories",
+                "portfolio.Skills",
+            ],
+            "items": [
+                {
+                    "title": _("Portfolio Management"),
+                    "link": reverse_lazy("admin:portfolio_projects_changelist"),
+                    "permission": lambda request: request.user.has_perm("portfolio.change_projects"),
+                },
+            ],
+            "label": "Portfolio",
+            "icon": "work",
+        },
+        {
+            "models": [
+                "django_celery_beat.ClockedSchedule",
+                "django_celery_beat.CrontabSchedule",
+                "django_celery_beat.IntervalSchedule",
+                "django_celery_beat.PeriodicTask",
+                "django_celery_beat.SolarSchedule",
+            ],
+            "items": [
+                {
+                    "title": _("Manage Celery Beat"),
+                    "link": reverse_lazy("admin:django_celery_beat_periodictask_changelist"),
+                    "permission": lambda request: request.user.has_perm("django_celery_beat.change_clocked_schedule"),
+                },
+            ],
+            "label": "Celery Beat",
+            "icon": "schedule",
+        },
+        {
+            "models": [
+                "django_celery_results.TaskResult",
+            ],
+            "items": [
+                {
+                    "title": _("Task Results"),
+                    "link": reverse_lazy("admin:django_celery_results_taskresult_changelist"),
+                    "permission": lambda request: request.user.has_perm("django_celery_results.change_taskresult"),
+                },
+            ],
+            "label": "Celery Results",
+            "icon": "schedule",
+        },
     ],
     "EXTENSIONS": {
         "modeltranslation": {
