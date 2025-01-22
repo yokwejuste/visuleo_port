@@ -172,11 +172,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Set environment variables
-        run: |
-          echo "${{ secrets.APP_SECRETS }}" > .env
-          set -o allexport; source .env; set +o allexport
-
       - name: Package Django app
         run: |
           mkdir package
@@ -202,7 +197,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
-          aws s3 cp ${{ github.event.repository.name }}-lambda.zip s3://${{ secrets.S3_BUCKET }}/${{ github.event.repository.name }}-lambda.zip --debug
+          aws s3 cp ./${{ github.event.repository.name }}-lambda.zip s3://${{ secrets.S3_BUCKET }}/
 
       - name: Deploy Lambda Function
         env:
