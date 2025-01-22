@@ -178,8 +178,10 @@ jobs:
           cp -r app package/
           cp requirements.txt package/
           cd package
-          pip install -r requirements.txt -t .
-          zip -r ../${{ github.event.repository.name }}-lambda.zip .
+          pip install pipreqs
+          pipreqs ./ --force
+          pip install -r requirements.txt --target .
+          zip -r ../${{ github.event.repository.name }}-lambda.zip . -x "tests/*" "*.git*" "static/*" "node_modules/*" "venv/*"
           cd ..
 
       - name: Create AWS Profile
