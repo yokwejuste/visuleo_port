@@ -1,0 +1,9 @@
+black==24.10.0
+django-browser-reload==1.17.0
+django-debug-toolbar==4.4.6
+django-extensions==3.2.3
+django-livereload-server==0.5.1
+djhtml==3.0.7
+flake8==7.1.1
+localstack-ext==4.0.3
+pre-commit==4.1.0

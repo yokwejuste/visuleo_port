@@ -47,10 +47,10 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install dependencies
+      - name: Install Linting Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install flake8
+          pip install -r requirements/dev.txt
 
       - name: Create Flake8 Configuration
         run: |
@@ -65,47 +65,47 @@ jobs:
           flake8 app/dj_apps --count --show-source --statistics
 
   test:
-      if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
-      needs: lint
-      runs-on: ubuntu-24.04
-      services:
-        postgres:
-          image: postgres:13
-          env:
-            POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: postgres_password
-            POSTGRES_DB: visuleo_db
-          ports:
-            - 5432:5432
-          options: >-
-            --health-cmd="pg_isready -U postgres"
-            --health-interval=10s
-            --health-timeout=5s
-            --health-retries=3
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
+    needs: lint
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres_password
+          POSTGRES_DB: visuleo_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
 
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-        - name: Set up Python
-          uses: actions/setup-python@v5
-          with:
-            python-version: '3.12'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
 
-        - name: Install dependencies
-          run: |
-            python -m pip install --upgrade pip
-            pip install -r requirements.txt
+      - name: Install Testing Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements/common.txt -r requirements/dev.txt
 
-        - name: Set environment variables
-          run: |
-            echo "DATABASE_URL=postgres://postgres:postgres_password@localhost:5432/visuleo_db" > .env
-            echo "${{ secrets.APP_SECRETS }}" >> .env
-            set -o allexport; source .env; set +o allexport
+      - name: Set environment variables
+        run: |
+          echo "DATABASE_URL=postgres://postgres:postgres_password@localhost:5432/visuleo_db" > .env
+          echo "${{ secrets.APP_SECRETS }}" >> .env
+          set -o allexport; source .env; set +o allexport
 
-        - name: Run tests
-          run: |
-            python manage.py test app.dj_apps
+      - name: Run tests
+        run: |
+          python manage.py test app.dj_apps
 
   build:
     if: ${{ github.event_name == 'push' }}
@@ -121,10 +121,10 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install dependencies
+      - name: Install Build Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r requirements/prod.txt
 
       - name: Collect static files
         run: |
@@ -144,7 +144,7 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install dependencies
+      - name: Install Security Analysis Tool
         run: |
           python -m pip install --upgrade pip
           pip install bandit
@@ -167,20 +167,18 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install dependencies
+      - name: Install Deployment Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r requirements/prod.txt
 
       - name: Package Django app
         run: |
           mkdir package
           cp -r app package/
-          cp requirements.txt package/
+          cp requirements/prod.txt package/
           cd package
-          pip install pipreqs
-          pipreqs ./ --force
-          pip install -r requirements.txt --target .
+          pip install -r prod.txt -t .
           zip -r ../${{ github.event.repository.name }}-lambda.zip . -x "tests/*" "*.git*" "static/*" "node_modules/*" "venv/*"
           cd ..
 
