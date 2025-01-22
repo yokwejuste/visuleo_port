@@ -114,7 +114,6 @@ jobs:
           DB_USER: 'postgres'
           DB_HOST: 'localhost'
           DB_PASSWORD: 'postgres_password'
-
   build:
     if: ${{ github.event_name == 'push' }}
     needs: test
@@ -153,13 +152,13 @@ jobs:
           python manage.py collectstatic --noinput
         env:
           DEBUG: 'False'
+          S3_STORAGE_BUCKET_NAME: ${{ secrets.S3_BUCKET }}
+          S3_REGION_NAME: ${{ secrets.AWS_REGION }}
           SECRET_KEY: 'SomethingSecret'
           DB_NAME: 'visuleo_db'
           DB_USER: 'postgres'
           DB_HOST: 'localhost'
           DB_PASSWORD: 'postgres_password'
-
-
   security-check:
     if: ${{ github.event_name == 'push' }}
     needs: build
