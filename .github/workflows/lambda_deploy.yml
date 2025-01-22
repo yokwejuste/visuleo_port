@@ -134,9 +134,30 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements/common.txt  -r requirements/prod.txt
 
+
+      - name: Create AWS Profile
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          mkdir -p ~/.aws
+          echo "[default]" > ~/.aws/credentials
+          echo "aws_access_key_id=${AWS_ACCESS_KEY_ID}" >> ~/.aws/credentials
+          echo "aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}" >> ~/.aws/credentials
+          echo "[default]" > ~/.aws/config
+          echo "region=${AWS_REGION}" >> ~/.aws/config
+
       - name: Collect static files
         run: |
           python manage.py collectstatic --noinput
+        env:
+          DEBUG: 'False'
+          SECRET_KEY: 'SomethingSecret'
+          DB_NAME: 'visuleo_db'
+          DB_USER: 'postgres'
+          DB_HOST: 'localhost'
+          DB_PASSWORD: 'postgres_password'
 
 
   security-check:
