@@ -14,7 +14,7 @@ env:
 jobs:
   format:
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout code
@@ -36,7 +36,7 @@ jobs:
   lint:
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
     needs: format
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout code
@@ -65,37 +65,52 @@ jobs:
           flake8 app/dj_apps --count --show-source --statistics
 
   test:
-    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
-    needs: lint
-    runs-on: ubuntu-latest
+      if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
+      needs: lint
+      runs-on: ubuntu-latest
+      services:
+        postgres:
+          image: postgres:13
+          env:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres_password
+            POSTGRES_DB: visuleo_db
+          ports:
+            - 5432:5432
+          options: >-
+            --health-cmd="pg_isready -U postgres"
+            --health-interval=10s
+            --health-timeout=5s
+            --health-retries=3
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
+        - name: Set up Python
+          uses: actions/setup-python@v5
+          with:
+            python-version: '3.12'
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+        - name: Install dependencies
+          run: |
+            python -m pip install --upgrade pip
+            pip install -r requirements.txt
 
-      - name: Set environment variables
-        run: |
-          echo "${{ secrets.APP_SECRETS }}" > .env
-          set -o allexport; source .env; set +o allexport
+        - name: Set environment variables
+          run: |
+            echo "DATABASE_URL=postgres://postgres:postgres_password@localhost:5432/visuleo_db" > .env
+            echo "${{ secrets.APP_SECRETS }}" >> .env
+            set -o allexport; source .env; set +o allexport
 
-      - name: Run tests
-        run: |
-          python manage.py test app.dj_apps
+        - name: Run tests
+          run: |
+            python manage.py test app.dj_apps
 
   build:
     if: ${{ github.event_name == 'push' }}
     needs: test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout code
@@ -118,7 +133,7 @@ jobs:
   security-check:
     if: ${{ github.event_name == 'push' }}
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout code
@@ -141,7 +156,7 @@ jobs:
   deploy:
     if: ${{ github.event_name == 'push' }}
     needs: security-check
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout code
