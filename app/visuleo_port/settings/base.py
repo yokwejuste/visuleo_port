@@ -11,7 +11,7 @@ load_dotenv(dotenv_path=os.path.join(BASE_DIR, ".env"))
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # Set DEBUG mode from environment variable
-DEBUG = os.environ.get("DEBUG", "True").lower() in ["true", "1"]
+DEBUG = os.environ.get("DEBUG", "False").lower() in ["true", "1"]
 
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").replace(" ", "").split(",")
