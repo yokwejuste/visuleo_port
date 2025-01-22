@@ -108,7 +108,7 @@ jobs:
         run: |
           python manage.py test app.dj_apps
         env:
-          DEBUG: 'True'
+          DEBUG: 'False'
           SECRET_KEY: 'SomethingSecret'
           DB_NAME: 'visuleo_db'
           DB_USER: 'postgres'
