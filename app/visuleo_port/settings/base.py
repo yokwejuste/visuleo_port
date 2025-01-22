@@ -1,7 +1,9 @@
+import os
+
 from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
 
-from app.visuleo_port.settings.extra import *
+from app.visuleo_port.settings.extra import SHARED_APPS, EXTRA_MIDDLEWARE
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 load_dotenv(dotenv_path=os.path.join(BASE_DIR, ".env"))
@@ -17,7 +19,7 @@ INTERNAL_IPS = os.getenv("INTERNAL_IPS", "").split(",")
 CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
 
 # Installed Apps
-UTILS_APPS = ["debug_toolbar", 'django_extensions']
+UTILS_APPS = ["debug_toolbar", "django_extensions"]
 INSTALLED_APPS = SHARED_APPS + (UTILS_APPS if DEBUG else [])
 
 # Language and Localization
@@ -117,7 +119,6 @@ if not DEBUG:
         "default": {
             "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
         },
-
         "staticfiles": {
             "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
         },

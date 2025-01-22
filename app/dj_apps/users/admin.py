@@ -19,10 +19,13 @@ class VisuleoUserAdmin(ModelAdmin):
         ("Important dates", {"fields": ("last_login", "date_joined")}),
     )
     add_fieldsets = (
-        (None, {
-            "classes": ("wide",),
-            "fields": ("email", "password1", "password2"),
-        }),
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": ("email", "password1", "password2"),
+            },
+        ),
     )
     readonly_fields = ("last_login", "date_joined")
     filter_horizontal = ()

@@ -89,10 +89,6 @@ class BaseModel(models.Model):
     def save(self, *args, **kwargs):
         current_user = get_current_user()
         if not self.pk and not self.created_by:
-            self.created_by = (
-                current_user if current_user and current_user.is_authenticated else None
-            )
-        self.updated_by = (
-            current_user if current_user and current_user.is_authenticated else None
-        )
+            self.created_by = current_user if current_user and current_user.is_authenticated else None
+        self.updated_by = current_user if current_user and current_user.is_authenticated else None
         super().save(*args, **kwargs)

@@ -1,18 +1,18 @@
 <div class="w-full px-4 sm:w-1/2 lg:w-1/4 xl:w-1/4">
     <div
-            class="group mb-8 rounded-xl bg-white px-5 pb-10 pt-12 shadow-testimonial dark:bg-dark dark:shadow-none"
+        class="group mb-8 rounded-xl bg-white px-5 pb-10 pt-12 shadow-testimonial dark:bg-dark dark:shadow-none"
     >
         <div class="relative z-10 mx-auto mb-5 h-[120px] w-[120px]">
             <img
-                    src="{{ image_path }}"
-                    alt="{{ name }}"
-                    class="h-[120px] w-[120px] rounded-full"
+                src="{{ image_path }}"
+                alt="{{ name }}"
+                class="h-[120px] w-[120px] rounded-full"
             />
             <span
-                    class="absolute bottom-0 left-0 -z-10 h-10 w-10 rounded-full bg-secondary opacity-0 transition-all group-hover:opacity-100"
+                class="absolute bottom-0 left-0 -z-10 h-10 w-10 rounded-full bg-secondary opacity-0 transition-all group-hover:opacity-100"
             ></span>
             <span class="absolute right-0 top-0 -z-10 opacity-0 transition-all group-hover:opacity-100"><i
-                    class="text-dark text-2xl fa-solid fa-gears"></i></span>
+                class="text-dark text-2xl fa-solid fa-gears"></i></span>
         </div>
         <div class="text-center">
             <h4 class="mb-1 text-lg font-semibold text-dark dark:text-white">
@@ -24,27 +24,27 @@
             <div class="flex items-center justify-center gap-5">
                 {% if fb_username %}
                     <a
-                            href="https://facebook.com/{{ fb_username }}"
-                            class="text-dark-6 hover:text-primary"
-                            target="_blank" rel="noopener noreferrer"
+                        href="https://facebook.com/{{ fb_username }}"
+                        class="text-dark-6 hover:text-primary"
+                        target="_blank" rel="noopener noreferrer"
                     >
                         <i class="fab fa-facebook-f"></i>
                     </a>
                 {% endif %}
                 {% if x_tw_username %}
                     <a
-                            href="https://x.com/{{ x_tw_username }}"
-                            class="text-dark-6 hover:text-primary"
-                            target="_blank" rel="noopener noreferrer"
+                        href="https://x.com/{{ x_tw_username }}"
+                        class="text-dark-6 hover:text-primary"
+                        target="_blank" rel="noopener noreferrer"
                     >
                         <i class="fab fa-twitter"></i>
                     </a>
                 {% endif %}
                 {% if in_username %}
                     <a
-                            href="https://instagram.com/{{ in_username }}"
-                            class="text-dark-6 hover:text-primary"
-                            target="_blank" rel="noopener noreferrer"
+                        href="https://instagram.com/{{ in_username }}"
+                        class="text-dark-6 hover:text-primary"
+                        target="_blank" rel="noopener noreferrer"
                     >
                         <i class="fab fa-instagram"></i>
                     </a>

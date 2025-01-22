@@ -57,6 +57,7 @@ class SolarScheduleAdmin(ModelAdmin):
 class ClockedScheduleAdmin(BaseClockedScheduleAdmin, ModelAdmin):
     pass
 
+
 admin.site.register(Projects)
 admin.site.register(Categories)
 admin.site.register(Skills)

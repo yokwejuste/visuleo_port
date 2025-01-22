@@ -8,6 +8,7 @@ class Volunteering(BaseModel):
     """
     Models  for volunteering experience
     """
+
     title = models.CharField(
         _("Title"),
         max_length=255,

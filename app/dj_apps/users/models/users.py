@@ -38,7 +38,6 @@ class VisuleoUser(BaseModel, AbstractBaseUser):
     Custom user model for Visuleo.
     """
 
-
     username = models.CharField(
         _("username"),
         max_length=255,

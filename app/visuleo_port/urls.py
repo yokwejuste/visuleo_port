@@ -11,35 +11,43 @@ ROUTE_BASE_VERSION = settings.ROUTE_BASE_VERSION
 
 if settings.DEBUG:
     urlpatterns = (
-            [
-                path("__debug__/", include("debug_toolbar.urls")),
-                path("__reload__/", include("django_browser_reload.urls")),
-                path("i18n/", include("django.conf.urls.i18n")),
-            ] + i18n_patterns(
-                path('accounts/', include('allauth.urls')),
-        path('', include(
-            ("app.dj_apps.users.routes", "users"),
-        ), name="users"),
-        path("admin/", admin.site.urls),
-    )
-            + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-            + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+        [
+            path("__debug__/", include("debug_toolbar.urls")),
+            path("__reload__/", include("django_browser_reload.urls")),
+            path("i18n/", include("django.conf.urls.i18n")),
+        ]
+        + i18n_patterns(
+            path("accounts/", include("allauth.urls")),
+            path(
+                "",
+                include(
+                    ("app.dj_apps.users.routes", "users"),
+                ),
+                name="users",
+            ),
+            path("admin/", admin.site.urls),
+        )
+        + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+        + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     )
 else:
     urlpatterns = (
-            [
-
-                path("i18n/", include("django.conf.urls.i18n")),
-            ] +
-            i18n_patterns(
-                path('accounts/', include('allauth.urls')),
-                path('', include(
+        [
+            path("i18n/", include("django.conf.urls.i18n")),
+        ]
+        + i18n_patterns(
+            path("accounts/", include("allauth.urls")),
+            path(
+                "",
+                include(
                     ("app.dj_apps.users.routes", "users"),
-                ), name="users"),
-                path("admin/", admin.site.urls),
-            )
-            + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-            + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+                ),
+                name="users",
+            ),
+            path("admin/", admin.site.urls),
+        )
+        + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+        + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     )
 
 handler404 = visu_404

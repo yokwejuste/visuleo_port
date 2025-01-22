@@ -1,0 +1,216 @@
+name: Deploy Django to AWS Lambda
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  PROJECT_NAME: app.visuleo_port
+
+jobs:
+  format:
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Black
+        run: |
+          python -m pip install black
+
+      - name: Format Python Files
+        run: |
+          find app -type f -name "*.py" ! -name "__init__.py" | xargs black --line-length 120
+
+  lint:
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
+    needs: format
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8
+
+      - name: Create Flake8 Configuration
+        run: |
+          echo "[flake8]" > .flake8
+          echo "exclude = app/**/migrations/*, app/media/*, app/static/*, .git, __pycache__, manage.py" >> .flake8
+          echo "max-line-length = 120" >> .flake8
+          echo "per-file-ignores =" >> .flake8
+          echo "    */__init__.py: F401, F403" >> .flake8
+
+      - name: Run Linter
+        run: |
+          flake8 app/dj_apps --count --show-source --statistics
+
+  test:
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
+    needs: lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Set environment variables
+        run: |
+          echo "${{ secrets.APP_SECRETS }}" > .env
+          set -o allexport; source .env; set +o allexport
+
+      - name: Run tests
+        run: |
+          python manage.py test app.dj_apps
+
+  build:
+    if: ${{ github.event_name == 'push' }}
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Collect static files
+        run: |
+          python manage.py collectstatic --noinput
+
+  security-check:
+    if: ${{ github.event_name == 'push' }}
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install bandit
+
+      - name: Run Security Analysis
+        run: |
+          bandit -r app
+
+  deploy:
+    if: ${{ github.event_name == 'push' }}
+    needs: security-check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Set environment variables
+        run: |
+          echo "${{ secrets.APP_SECRETS }}" > .env
+          set -o allexport; source .env; set +o allexport
+
+      - name: Package Django app
+        run: |
+          mkdir package
+          cp -r app package/
+          cp requirements.txt package/
+          cd package
+          pip install -r requirements.txt -t .
+          zip -r ../${{ github.event.repository.name }}-lambda.zip .
+          cd ..
+
+      - name: Create AWS Profile
+        run: |
+          mkdir -p ~/.aws
+          echo "[default]" > ~/.aws/credentials
+          echo "aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
+          echo "aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
+          echo "[default]" > ~/.aws/config
+          echo "region=${{ secrets.AWS_REGION }}" >> ~/.aws/config
+
+      - name: Upload package to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          aws s3 cp ${{ github.event.repository.name }}-lambda.zip s3://${{ secrets.S3_BUCKET }}/${{ github.event.repository.name }}-lambda.zip --debug
+
+      - name: Deploy Lambda Function
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          aws lambda update-function-code \
+            --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }} \
+            --s3-bucket ${{ secrets.S3_BUCKET }} \
+            --s3-key ${{ github.event.repository.name }}-lambda.zip
+
+      - name: Get Lambda Function URL
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        id: lambda-url
+        run: |
+          FUNCTION_URL=$(aws lambda get-function-url-config --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }} --query 'FunctionUrl' --output text)
+          echo "FUNCTION_URL=${FUNCTION_URL}" >> $GITHUB_ENV
+
+      - name: Output Lambda Function URL
+        run: |
+          echo "Lambda Function URL:"
+          echo "${{ env.FUNCTION_URL }}"

@@ -15,84 +15,339 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Categories',
+            name="Categories",
             fields=[
-                ('id', models.AutoField(editable=False, help_text='Unique identifier for this object.', primary_key=True, serialize=False, verbose_name='id')),
-                ('created', models.DateTimeField(auto_now_add=True, help_text='Date and time when this object was created.', verbose_name='created')),
-                ('updated', models.DateTimeField(auto_now=True, help_text='Date and time when this object was last updated.', verbose_name='updated')),
-                ('is_deleted', models.BooleanField(default=False, help_text='Boolean field to mark if this object is deleted.', verbose_name='is deleted')),
-                ('name', models.CharField(help_text='Name of the category.', max_length=255, verbose_name='name')),
-                ('slug', models.SlugField(help_text='Slug of the category.', max_length=255, unique=True, verbose_name='slug')),
-                ('description', models.TextField(help_text='Description of the category.', verbose_name='description')),
-                ('created_by', models.ForeignKey(blank=True, help_text='User who created this object.', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='%(app_label)s_%(class)s_created_by', to=settings.AUTH_USER_MODEL)),
-                ('updated_by', models.ForeignKey(blank=True, help_text='User who last updated this object.', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='%(app_label)s_%(class)s_updated_by', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        editable=False,
+                        help_text="Unique identifier for this object.",
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="id",
+                    ),
+                ),
+                (
+                    "created",
+                    models.DateTimeField(
+                        auto_now_add=True,
+                        help_text="Date and time when this object was created.",
+                        verbose_name="created",
+                    ),
+                ),
+                (
+                    "updated",
+                    models.DateTimeField(
+                        auto_now=True,
+                        help_text="Date and time when this object was last updated.",
+                        verbose_name="updated",
+                    ),
+                ),
+                (
+                    "is_deleted",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Boolean field to mark if this object is deleted.",
+                        verbose_name="is deleted",
+                    ),
+                ),
+                ("name", models.CharField(help_text="Name of the category.", max_length=255, verbose_name="name")),
+                (
+                    "slug",
+                    models.SlugField(
+                        help_text="Slug of the category.", max_length=255, unique=True, verbose_name="slug"
+                    ),
+                ),
+                ("description", models.TextField(help_text="Description of the category.", verbose_name="description")),
+                (
+                    "created_by",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="User who created this object.",
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="%(app_label)s_%(class)s_created_by",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "updated_by",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="User who last updated this object.",
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="%(app_label)s_%(class)s_updated_by",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'category',
-                'verbose_name_plural': 'categories',
-                'db_table': 'categories',
-                'ordering': ('name',),
+                "verbose_name": "category",
+                "verbose_name_plural": "categories",
+                "db_table": "categories",
+                "ordering": ("name",),
             },
         ),
         migrations.CreateModel(
-            name='Projects',
+            name="Projects",
             fields=[
-                ('id', models.AutoField(editable=False, help_text='Unique identifier for this object.', primary_key=True, serialize=False, verbose_name='id')),
-                ('created', models.DateTimeField(auto_now_add=True, help_text='Date and time when this object was created.', verbose_name='created')),
-                ('updated', models.DateTimeField(auto_now=True, help_text='Date and time when this object was last updated.', verbose_name='updated')),
-                ('is_deleted', models.BooleanField(default=False, help_text='Boolean field to mark if this object is deleted.', verbose_name='is deleted')),
-                ('name', models.CharField(help_text='Name of the project.', max_length=255, verbose_name='name')),
-                ('slug', models.SlugField(help_text='Slug for the project.', max_length=255, unique=True, verbose_name='slug')),
-                ('description', models.TextField(help_text='Description of the project.', verbose_name='description')),
-                ('display_image', models.ImageField(help_text='Image for the project.', upload_to='projects/', verbose_name='image')),
-                ('url', models.URLField(blank=True, help_text='URL for the project.', max_length=255, null=True, verbose_name='url')),
-                ('is_featured', models.BooleanField(default=False, help_text='Boolean field to mark if this project is featured.', verbose_name='is featured')),
-                ('categories', models.ManyToManyField(help_text='Categories for the project.', related_name='projects', to='portfolio.categories', verbose_name='categories')),
-                ('created_by', models.ForeignKey(blank=True, help_text='User who created this object.', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='%(app_label)s_%(class)s_created_by', to=settings.AUTH_USER_MODEL)),
-                ('updated_by', models.ForeignKey(blank=True, help_text='User who last updated this object.', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='%(app_label)s_%(class)s_updated_by', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        editable=False,
+                        help_text="Unique identifier for this object.",
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="id",
+                    ),
+                ),
+                (
+                    "created",
+                    models.DateTimeField(
+                        auto_now_add=True,
+                        help_text="Date and time when this object was created.",
+                        verbose_name="created",
+                    ),
+                ),
+                (
+                    "updated",
+                    models.DateTimeField(
+                        auto_now=True,
+                        help_text="Date and time when this object was last updated.",
+                        verbose_name="updated",
+                    ),
+                ),
+                (
+                    "is_deleted",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Boolean field to mark if this object is deleted.",
+                        verbose_name="is deleted",
+                    ),
+                ),
+                ("name", models.CharField(help_text="Name of the project.", max_length=255, verbose_name="name")),
+                (
+                    "slug",
+                    models.SlugField(
+                        help_text="Slug for the project.", max_length=255, unique=True, verbose_name="slug"
+                    ),
+                ),
+                ("description", models.TextField(help_text="Description of the project.", verbose_name="description")),
+                (
+                    "display_image",
+                    models.ImageField(help_text="Image for the project.", upload_to="projects/", verbose_name="image"),
+                ),
+                (
+                    "url",
+                    models.URLField(
+                        blank=True, help_text="URL for the project.", max_length=255, null=True, verbose_name="url"
+                    ),
+                ),
+                (
+                    "is_featured",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Boolean field to mark if this project is featured.",
+                        verbose_name="is featured",
+                    ),
+                ),
+                (
+                    "categories",
+                    models.ManyToManyField(
+                        help_text="Categories for the project.",
+                        related_name="projects",
+                        to="portfolio.categories",
+                        verbose_name="categories",
+                    ),
+                ),
+                (
+                    "created_by",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="User who created this object.",
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="%(app_label)s_%(class)s_created_by",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "updated_by",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="User who last updated this object.",
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="%(app_label)s_%(class)s_updated_by",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'project',
-                'verbose_name_plural': 'projects',
-                'db_table': 'projects',
+                "verbose_name": "project",
+                "verbose_name_plural": "projects",
+                "db_table": "projects",
             },
         ),
         migrations.CreateModel(
-            name='ProjectImages',
+            name="ProjectImages",
             fields=[
-                ('id', models.AutoField(editable=False, help_text='Unique identifier for this object.', primary_key=True, serialize=False, verbose_name='id')),
-                ('created', models.DateTimeField(auto_now_add=True, help_text='Date and time when this object was created.', verbose_name='created')),
-                ('updated', models.DateTimeField(auto_now=True, help_text='Date and time when this object was last updated.', verbose_name='updated')),
-                ('is_deleted', models.BooleanField(default=False, help_text='Boolean field to mark if this object is deleted.', verbose_name='is deleted')),
-                ('image', models.ImageField(help_text='Image for the project.', upload_to='projects/', verbose_name='image')),
-                ('project_image_id', models.IntegerField(help_text='Project image id.', verbose_name='project image id')),
-                ('created_by', models.ForeignKey(blank=True, help_text='User who created this object.', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='%(app_label)s_%(class)s_created_by', to=settings.AUTH_USER_MODEL)),
-                ('updated_by', models.ForeignKey(blank=True, help_text='User who last updated this object.', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='%(app_label)s_%(class)s_updated_by', to=settings.AUTH_USER_MODEL)),
-                ('project', models.ForeignKey(help_text='Project for the image.', on_delete=django.db.models.deletion.CASCADE, related_name='images', to='portfolio.projects', verbose_name='project')),
+                (
+                    "id",
+                    models.AutoField(
+                        editable=False,
+                        help_text="Unique identifier for this object.",
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="id",
+                    ),
+                ),
+                (
+                    "created",
+                    models.DateTimeField(
+                        auto_now_add=True,
+                        help_text="Date and time when this object was created.",
+                        verbose_name="created",
+                    ),
+                ),
+                (
+                    "updated",
+                    models.DateTimeField(
+                        auto_now=True,
+                        help_text="Date and time when this object was last updated.",
+                        verbose_name="updated",
+                    ),
+                ),
+                (
+                    "is_deleted",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Boolean field to mark if this object is deleted.",
+                        verbose_name="is deleted",
+                    ),
+                ),
+                (
+                    "image",
+                    models.ImageField(help_text="Image for the project.", upload_to="projects/", verbose_name="image"),
+                ),
+                (
+                    "project_image_id",
+                    models.IntegerField(help_text="Project image id.", verbose_name="project image id"),
+                ),
+                (
+                    "created_by",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="User who created this object.",
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="%(app_label)s_%(class)s_created_by",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "updated_by",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="User who last updated this object.",
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="%(app_label)s_%(class)s_updated_by",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "project",
+                    models.ForeignKey(
+                        help_text="Project for the image.",
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="images",
+                        to="portfolio.projects",
+                        verbose_name="project",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'project image',
-                'verbose_name_plural': 'project images',
-                'db_table': 'project_images',
+                "verbose_name": "project image",
+                "verbose_name_plural": "project images",
+                "db_table": "project_images",
             },
         ),
         migrations.CreateModel(
-            name='Skills',
+            name="Skills",
             fields=[
-                ('id', models.AutoField(editable=False, help_text='Unique identifier for this object.', primary_key=True, serialize=False, verbose_name='id')),
-                ('created', models.DateTimeField(auto_now_add=True, help_text='Date and time when this object was created.', verbose_name='created')),
-                ('updated', models.DateTimeField(auto_now=True, help_text='Date and time when this object was last updated.', verbose_name='updated')),
-                ('is_deleted', models.BooleanField(default=False, help_text='Boolean field to mark if this object is deleted.', verbose_name='is deleted')),
-                ('name', models.CharField(help_text='Name of the skill.', max_length=255, verbose_name='name')),
-                ('description', models.TextField(help_text='Description of the skill.', verbose_name='description')),
-                ('is_featured', models.BooleanField(default=False, help_text='Boolean field to mark if this skill is featured.', verbose_name='is featured')),
-                ('created_by', models.ForeignKey(blank=True, help_text='User who created this object.', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='%(app_label)s_%(class)s_created_by', to=settings.AUTH_USER_MODEL)),
-                ('updated_by', models.ForeignKey(blank=True, help_text='User who last updated this object.', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='%(app_label)s_%(class)s_updated_by', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        editable=False,
+                        help_text="Unique identifier for this object.",
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="id",
+                    ),
+                ),
+                (
+                    "created",
+                    models.DateTimeField(
+                        auto_now_add=True,
+                        help_text="Date and time when this object was created.",
+                        verbose_name="created",
+                    ),
+                ),
+                (
+                    "updated",
+                    models.DateTimeField(
+                        auto_now=True,
+                        help_text="Date and time when this object was last updated.",
+                        verbose_name="updated",
+                    ),
+                ),
+                (
+                    "is_deleted",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Boolean field to mark if this object is deleted.",
+                        verbose_name="is deleted",
+                    ),
+                ),
+                ("name", models.CharField(help_text="Name of the skill.", max_length=255, verbose_name="name")),
+                ("description", models.TextField(help_text="Description of the skill.", verbose_name="description")),
+                (
+                    "is_featured",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Boolean field to mark if this skill is featured.",
+                        verbose_name="is featured",
+                    ),
+                ),
+                (
+                    "created_by",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="User who created this object.",
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="%(app_label)s_%(class)s_created_by",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "updated_by",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="User who last updated this object.",
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="%(app_label)s_%(class)s_updated_by",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'skill',
-                'verbose_name_plural': 'skills',
-                'db_table': 'skills',
+                "verbose_name": "skill",
+                "verbose_name_plural": "skills",
+                "db_table": "skills",
             },
         ),
     ]

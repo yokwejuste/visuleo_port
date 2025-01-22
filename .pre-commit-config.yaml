@@ -1,0 +1,38 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+        exclude: "\\.conf$"
+
+  - repo: local
+    hooks:
+      - id: black-format
+        name: Black Formatter
+        entry: black --line-length 120
+        language: system
+        types: [python]
+        files: '^(?!.*__init__\\.py).*$'
+
+      - id: lint-flake8
+        name: Lint with flake8
+        entry: flake8 app/dj_apps
+        language: system
+        types: [python]
+
+      - id: test-django
+        name: Run Django tests
+        entry: python manage.py test app/dj_apps
+        language: system
+        pass_filenames: false
+        types: [python]
+
+      - id: bandit-security
+        name: Run Bandit Security Checks
+        entry: bandit -r app
+        language: system
+        pass_filenames: false
+        types: [python]

@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 EXTRA_MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
-    'allauth.account.middleware.AccountMiddleware',
+    "allauth.account.middleware.AccountMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "simple_history.middleware.HistoryRequestMiddleware",
     "app.dj_apps.users.middlewares.UserTracingMiddleware",
@@ -41,13 +41,13 @@ SHARED_APPS = [
     "allauth.socialaccount.providers.google",
     "widget_tweaks",
     "storages",
-    'slippers',
+    "slippers",
     "livereload",
     "passkeys",
     "app.dj_apps.portfolio",
     "app.dj_apps.users",
-    'django_celery_beat',
-    'django_celery_results',
+    "django_celery_beat",
+    "django_celery_results",
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -71,12 +71,12 @@ OAUTH2_PROVIDER = {
 ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
 ROUTE_BASE_VERSION = "v1/"
 
-CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0')
-CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', 'redis://localhost:6379/0')
-CELERY_ACCEPT_CONTENT = os.getenv('CELERY_ACCEPT_CONTENT', 'json').split(',')
-CELERY_TASK_SERIALIZER = os.getenv('CELERY_TASK_SERIALIZER', 'json')
-CELERY_RESULT_SERIALIZER = os.getenv('CELERY_RESULT_SERIALIZER', 'json')
-CELERY_TIMEZONE = os.getenv('CELERY_TIMEZONE', 'UTC')
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://localhost:6379/0")
+CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", "redis://localhost:6379/0")
+CELERY_ACCEPT_CONTENT = os.getenv("CELERY_ACCEPT_CONTENT", "json").split(",")
+CELERY_TASK_SERIALIZER = os.getenv("CELERY_TASK_SERIALIZER", "json")
+CELERY_RESULT_SERIALIZER = os.getenv("CELERY_RESULT_SERIALIZER", "json")
+CELERY_TIMEZONE = os.getenv("CELERY_TIMEZONE", "UTC")
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
 
@@ -120,8 +120,8 @@ UNFOLD = {
             "700": "54 131 99",
             "800": "47 111 84",
             "900": "36 83 63",
-            "950": "28 58 43"
-        }
+            "950": "28 58 43",
+        },
     },
     "navigation": [
         {

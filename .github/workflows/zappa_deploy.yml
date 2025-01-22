@@ -3,7 +3,7 @@ name: Deploy Zappa to AWS
 on:
   push:
     branches:
-      - main
+      - placeholder
 
 jobs:
   deploy:
