@@ -107,7 +107,7 @@ jobs:
         run: |
           python manage.py test app.dj_apps
         env:
-          $(cat .env | xargs)
+          $(cat .env | sed 's/^/"/g'.produce)
 
   build:
     if: ${{ github.event_name == 'push' }}
