@@ -10,8 +10,6 @@ EXTRA_MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "simple_history.middleware.HistoryRequestMiddleware",
     "app.dj_apps.users.middlewares.UserTracingMiddleware",
-    "django_browser_reload.middleware.BrowserReloadMiddleware",
-    "livereload.middleware.LiveReloadScript",
 ]
 
 PUBLIC_SCHEMA_URLCONF = "app.visuleo_port.urls"
@@ -30,7 +28,6 @@ SHARED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django_browser_reload",
     "django_filters",
     "corsheaders",
     "simple_history",
@@ -42,7 +39,6 @@ SHARED_APPS = [
     "widget_tweaks",
     "storages",
     "slippers",
-    "livereload",
     "passkeys",
     "app.dj_apps.portfolio",
     "app.dj_apps.users",

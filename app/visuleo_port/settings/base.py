@@ -19,7 +19,16 @@ INTERNAL_IPS = os.getenv("INTERNAL_IPS", "").split(",")
 CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
 
 # Installed Apps
-UTILS_APPS = ["debug_toolbar", "django_extensions"]
+UTILS_APPS = (
+    [
+        "debug_toolbar",
+        "django_extensions" "livereload",
+        "django_browser_reload",
+    ]
+    if DEBUG
+    else []
+)
+
 INSTALLED_APPS = SHARED_APPS + (UTILS_APPS if DEBUG else [])
 
 # Language and Localization
@@ -41,7 +50,11 @@ INITIAL_MIDDLEWARE = [
 MIDDLEWARE = EXTRA_MIDDLEWARE + INITIAL_MIDDLEWARE
 
 if DEBUG:
-    MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+    MIDDLEWARE += [
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+        "django_browser_reload.middleware.BrowserReloadMiddleware",
+        "livereload.middleware.LiveReloadScript",
+    ]
 
 # URL Configuration
 ROOT_URLCONF = "app.visuleo_port.urls"
@@ -68,7 +81,6 @@ TEMPLATES = [
             "builtins": [
                 "django.templatetags.static",
                 "slippers.templatetags.slippers",
-                "livereload.templatetags.livereload_tags",
             ],
         },
     },
