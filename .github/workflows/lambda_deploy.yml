@@ -114,6 +114,7 @@ jobs:
           DB_USER: 'postgres'
           DB_HOST: 'localhost'
           DB_PASSWORD: 'postgres_password'
+
   build:
     if: ${{ github.event_name == 'push' }}
     needs: test
