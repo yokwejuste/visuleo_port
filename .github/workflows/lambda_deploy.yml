@@ -67,7 +67,7 @@ jobs:
   test:
       if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
       needs: lint
-      runs-on: ubuntu-latest
+      runs-on: ubuntu-24.04
       services:
         postgres:
           image: postgres:13
@@ -197,7 +197,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
-          aws s3 cp ./${{ github.event.repository.name }}-lambda.zip s3://${{ secrets.S3_BUCKET }}/
+          aws s3 cp ./${{ github.event.repository.name }}-lambda.zip s3://${{ secrets.S3_BUCKET }}/${{ github.event.repository.name }}-lambda.zip
 
       - name: Deploy Lambda Function
         env:
