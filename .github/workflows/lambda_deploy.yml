@@ -99,16 +99,21 @@ jobs:
 
       - name: Set environment variables
         run: |
-          echo "DATABASE_URL=postgres://postgres:postgres_password@localhost:5432/visuleo_db" > .env
-          echo "${{ secrets.APP_SECRETS }}" >> .env
-          set -o allexport; source .env; set +o allexport
+          echo "${{ secrets.APP_SECRETS }}" > .env
+          set -o allexport
+          source .env
+          set +o allexport
 
       - name: Run tests
         run: |
           python manage.py test app.dj_apps
         env:
-          $(cat .env | sed 's/^/"/g'.produce)
-
+          DEBUG: 'True'
+          SECRET_KEY: 'SomethingSecret'
+          DB_NAME: 'visuleo_db'
+          DB_USER: 'postgres'
+          DB_HOST: 'localhost'
+          DB_PASSWORD: 'postgres_password'
   build:
     if: ${{ github.event_name == 'push' }}
     needs: test
@@ -131,6 +136,7 @@ jobs:
       - name: Collect static files
         run: |
           python manage.py collectstatic --noinput
+
 
   security-check:
     if: ${{ github.event_name == 'push' }}
