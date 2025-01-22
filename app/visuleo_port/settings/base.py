@@ -22,7 +22,8 @@ CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
 UTILS_APPS = (
     [
         "debug_toolbar",
-        "django_extensions" "livereload",
+        "django_extensions",
+        "livereload",
         "django_browser_reload",
     ]
     if DEBUG
