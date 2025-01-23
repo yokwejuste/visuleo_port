@@ -5,7 +5,6 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 EXTRA_MIDDLEWARE = [
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "allauth.account.middleware.AccountMiddleware",
     "app.dj_apps.users.middlewares.UserTracingMiddleware",
 ]
