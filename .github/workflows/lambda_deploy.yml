@@ -205,9 +205,12 @@ jobs:
         run: |
           mkdir package
           cp -r app package/
-          cp requirements/prod.txt package/
+          cp -r manage.py package/
+          cp -r requirements/prod.txt  requirements/common.txt  package/
+          cp -r  magnum.yml package/
+          cp -r handler.py package/
           cd package
-          pip install -r prod.txt -t .
+          pip install -r prod.txt  -r common.txt  -t .
           zip -r ../${{ github.event.repository.name }}-lambda.zip . -x "tests/*" "*.git*" "static/*" "node_modules/*" "venv/*"
           cd ..
 
