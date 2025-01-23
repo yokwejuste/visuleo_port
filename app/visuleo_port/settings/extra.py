@@ -7,8 +7,6 @@ from django.utils.translation import gettext_lazy as _
 EXTRA_MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "allauth.account.middleware.AccountMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
-    "simple_history.middleware.HistoryRequestMiddleware",
     "app.dj_apps.users.middlewares.UserTracingMiddleware",
 ]
 
@@ -29,8 +27,6 @@ SHARED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_filters",
-    "corsheaders",
-    "simple_history",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
@@ -42,8 +38,6 @@ SHARED_APPS = [
     "passkeys",
     "app.dj_apps.portfolio",
     "app.dj_apps.users",
-    "django_celery_beat",
-    "django_celery_results",
 ]
 
 AUTHENTICATION_BACKENDS = [
